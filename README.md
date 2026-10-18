@@ -55,11 +55,39 @@ The project demonstrates how an AI model can be integrated into a practical web 
 |---|---|---|
 | ![Review submission](./docs/screenshots/04-review-submission.png) | ![Authentication](./docs/screenshots/06-authentication.png) | ![Profile and dark mode](./docs/screenshots/07-profile-dark-mode.png) |
 
-Optional additional screenshots:
+### 🌟 Optional feature showcase
 
-- **`00-landing-page.png`** — the landing page with the rotating AI Hotel Insight card.
-- **`08-photo-carousel.png`** — the hotel photo carousel opened on a room or exterior image.
-- **`09-review-filters.png`** — the hotel detail page with the positive, neutral, or negative review filter selected.
+These screenshots are not required for the core gallery, but they make the
+repository more expressive by highlighting some of the application's most
+interactive features.
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <strong>Rotating hotel insight</strong><br><br>
+      <img src="./docs/screenshots/00-landing-page.png" alt="Landing page with rotating AI Hotel Insight card" width="280"><br><br>
+      <sub>Show the landing page's featured, well-rated hotel and direct hotel link.</sub><br><br>
+      <code>00-landing-page.png</code>
+    </td>
+    <td align="center" width="33%">
+      <strong>Interactive photo carousel</strong><br><br>
+      <img src="./docs/screenshots/08-photo-carousel.png" alt="Hotel photo carousel showing a selected room image" width="280"><br><br>
+      <sub>Open a room or exterior image with thumbnails, navigation controls, and the image counter visible.</sub><br><br>
+      <code>08-photo-carousel.png</code>
+    </td>
+    <td align="center" width="33%">
+      <strong>Review sentiment filters</strong><br><br>
+      <img src="./docs/screenshots/09-review-filters.png" alt="Hotel reviews filtered by sentiment" width="280"><br><br>
+      <sub>Show the hotel review list with a positive, neutral, or negative filter selected.</sub><br><br>
+      <code>09-review-filters.png</code>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <em>Tip: Capture these optional views in the same browser size and theme as
+  the main gallery for a consistent visual presentation.</em>
+</p>
 
 Do not include passwords, email addresses, API keys, tokens, local file paths, or personal information in screenshots.
 
