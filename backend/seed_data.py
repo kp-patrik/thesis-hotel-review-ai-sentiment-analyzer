@@ -1,62 +1,121 @@
-"""Replace the development dataset with curated hotels and meaningful reviews."""
+"""Create a deterministic development dataset with meaningful hotel reviews."""
 
 from database import Hotel, Review, SessionLocal
-from database_config import SAMPLE_HOTELS
 from sentiment import sentiment_analyzer
 
-REVIEWS_BY_HOTEL = {
-    "Grand Plaza Hotel": [
-        ("Alice Johnson", "The room was spotless, spacious, and quiet despite the central Manhattan location. The concierge arranged excellent theatre tickets and the staff were genuinely helpful.", 5),
-        ("Bob Smith", "The location is ideal for exploring the city, but traffic noise was noticeable at night. The room was comfortable and the front desk responded quickly.", 3),
-        ("Maria Garcia", "We loved the skyline view and the rooftop restaurant. Check-in was fast, housekeeping was attentive, and the bed was exceptionally comfortable.", 5),
-        ("Daniel Brown", "The hotel looks luxurious, but our bathroom needed maintenance and the Wi-Fi dropped several times during a work call. The price felt high for that experience.", 2),
-        ("Sophie Wilson", "A polished hotel with excellent service and an unbeatable location. I would happily stay here again when visiting New York.", 5),
-    ],
-    "Ocean Breeze Resort": [
-        ("Carla Davis", "The beachfront location is beautiful, and the pool area was clean and relaxing. The spa treatment was excellent and the staff made our anniversary special.", 5),
-        ("Michael Wilson", "The view from our balcony was wonderful, but the restaurant was overpriced and dinner service was slow. The room itself was clean and comfortable.", 3),
-        ("Nina Taylor", "Perfect resort for a quiet beach holiday. The direct beach access, warm service, and peaceful rooms made this our favorite stay in Miami.", 5),
-        ("James Anderson", "The beach was crowded and several facilities looked dated. We also waited nearly an hour for room service, which was disappointing for the price.", 2),
-        ("Olivia Moore", "The resort has lovely gardens, a great pool, and friendly employees. Breakfast had plenty of fresh options and everything felt well maintained.", 4),
-    ],
-    "Mountain View Lodge": [
-        ("Emma Taylor", "The fireplace, wooden rooms, and mountain views created a wonderfully cozy atmosphere. It was the perfect base for our ski trip.", 5),
-        ("Lucas Martin", "The lodge is close to the slopes and the staff were welcoming. Our room was warm, although the mattress was firmer than expected.", 4),
-        ("Grace Lee", "The hot chocolate by the fireplace was a lovely touch, and the trail recommendations were useful. We had a peaceful and memorable stay.", 5),
-        ("Noah Harris", "The scenery is beautiful, but the room was smaller than advertised and the heating was unreliable on the coldest night.", 2),
-        ("Mia Clark", "A charming lodge with helpful staff and excellent access to outdoor activities. I would recommend it to anyone visiting Aspen.", 5),
-    ],
-    "Downtown Business Hotel": [
-        ("Frank Miller", "The conference rooms had reliable Wi-Fi, comfortable seating, and excellent presentation equipment. The location made meetings easy to reach.", 5),
-        ("Rachel Lewis", "The room was clean and the desk was suitable for working, but noise from the hallway made it difficult to sleep before an early meeting.", 3),
-        ("Henry Walker", "Fast check-in, professional staff, and an excellent breakfast service. This hotel made a busy business trip much easier.", 5),
-        ("Eva Hall", "The air conditioning in our room was noisy and the restaurant closed earlier than expected. It was functional, but not especially comfortable.", 2),
-        ("Thomas Young", "A practical and modern hotel with dependable internet and convenient transport links. Good value for short business stays.", 4),
-    ],
-    "Historic Boutique Inn": [
-        ("Grace Lee", "The restored architecture and antique furniture give this inn real character. Our room was beautiful, and the breakfast felt homemade and fresh.", 5),
-        ("Samuel King", "The garden was peaceful and the staff were kind. The historic staircase is charming, although guests with heavy luggage may find it difficult.", 4),
-        ("Chloe Wright", "A romantic and memorable stay in a lovely historic building. The room was clean, quiet, and thoughtfully decorated.", 5),
-        ("William Scott", "The property is attractive, but our room was smaller than expected and the bathroom fixtures need updating. Service was still friendly.", 3),
-        ("Lily Green", "Wonderful southern hospitality, beautiful details, and a calm courtyard. The inn feels personal in a way large hotels do not.", 5),
-    ],
-}
+HOTELS_COUNT = 100
+REVIEWS_PER_HOTEL = 50
+
+CITY_PROFILES = [
+    ("New York", "NY", "city-center", "skyline views"),
+    ("Miami", "FL", "beachfront", "direct beach access"),
+    ("Aspen", "CO", "mountain", "ski trails"),
+    ("Chicago", "IL", "business district", "conference facilities"),
+    ("Charleston", "SC", "historic district", "a peaceful courtyard"),
+    ("San Francisco", "CA", "waterfront", "harbor views"),
+    ("Seattle", "WA", "downtown", "a rooftop lounge"),
+    ("Boston", "MA", "historic center", "walkable attractions"),
+    ("Austin", "TX", "entertainment district", "live music nearby"),
+    ("Portland", "OR", "garden quarter", "local restaurants"),
+    ("Denver", "CO", "city center", "easy access to hiking"),
+    ("Nashville", "TN", "music district", "evening entertainment"),
+    ("Savannah", "GA", "old town", "shaded gardens"),
+    ("San Diego", "CA", "coastal", "sunset walks"),
+    ("New Orleans", "LA", "French Quarter", "historic architecture"),
+    ("Washington", "DC", "museum quarter", "major landmarks"),
+    ("Philadelphia", "PA", "old city", "excellent dining"),
+    ("Orlando", "FL", "resort area", "family attractions"),
+    ("Las Vegas", "NV", "central strip", "evening shows"),
+    ("Honolulu", "HI", "island coast", "ocean views"),
+]
+
+HOTEL_STYLES = [
+    ("Grand", "luxury", ["wifi", "spa", "gym", "restaurant", "concierge"]),
+    ("Harbor", "resort", ["wifi", "pool", "spa", "restaurant", "parking"]),
+    ("Pine", "lodge", ["wifi", "fireplace", "restaurant", "parking", "hiking"]),
+    ("Civic", "business", ["wifi", "conference", "restaurant", "gym", "parking"]),
+    ("Heritage", "boutique", ["wifi", "restaurant", "garden", "library", "courtyard"]),
+]
+
+REVIEWERS = [
+    "Alex Morgan", "Jordan Taylor", "Casey Brooks", "Riley Parker", "Morgan Ellis",
+    "Jamie Carter", "Taylor Reed", "Avery Cooper", "Cameron Hayes", "Drew Bennett",
+]
+
+REVIEW_TEMPLATES = [
+    ("The room was spotless and comfortable, and the staff were warm and attentive. "
+     "The {feature} made the stay especially enjoyable.", 5),
+    ("We loved the location near the {area}. Check-in was quick, breakfast was fresh, "
+     "and the room was quiet at night.", 5),
+    ("The service was professional and the facilities were well maintained. "
+     "I would gladly return for another stay in {city}.", 5),
+    ("A very pleasant stay with a comfortable bed and helpful front-desk team. "
+     "The only small issue was limited storage in the room.", 4),
+    ("The hotel has a lot going for it, especially the {feature}. "
+     "Housekeeping was reliable, although the room took a while to cool down.", 4),
+    ("The location was convenient and the room was clean, but hallway noise woke us "
+     "one night. Overall, it was a reasonable stay.", 3),
+    ("The room was comfortable enough, but the restaurant was expensive and service "
+     "was slower than expected. The staff remained polite.", 3),
+    ("The {feature} was beautiful, but the bathroom fixtures need updating. "
+     "The hotel was still suitable for a short visit.", 3),
+    ("Our room needed maintenance and the Wi-Fi dropped during an important call. "
+     "The location was useful, but the price felt too high.", 2),
+    ("The check-in process was slow, the room was not ready on time, and the service "
+     "was disappointing. I expected more for this rate.", 2),
+]
 
 
-def analyze_review(text: str) -> tuple[str, float]:
-    result = sentiment_analyzer.analyze_sentiment(text)
-    if "error" in result:
-        raise RuntimeError(f"Could not analyze curated review: {result['error']}")
-    return result["label"], result["score"]
+def build_hotels() -> list[dict]:
+    hotels = []
+    for index in range(HOTELS_COUNT):
+        city, state, area, feature = CITY_PROFILES[index % len(CITY_PROFILES)]
+        style, category, amenities = HOTEL_STYLES[index % len(HOTEL_STYLES)]
+        suffix = index // len(CITY_PROFILES) + 1
+        name = f"{style} {city} {category.title()} {suffix}"
+        hotels.append({
+            "name": name,
+            "location": f"{city}, {state}",
+            "description": (
+                f"A {category} hotel in the {area} of {city}, offering {feature} "
+                "and comfortable accommodation for leisure and business travelers."
+            ),
+            "category": category,
+            "amenities": amenities,
+        })
+    return hotels
+
+
+def build_reviews(hotel: dict, hotel_index: int) -> list[tuple[str, str, int]]:
+    city = hotel["location"].split(",")[0]
+    area = CITY_PROFILES[hotel_index % len(CITY_PROFILES)][2]
+    feature = CITY_PROFILES[hotel_index % len(CITY_PROFILES)][3]
+    reviews = []
+    for review_index, (template, rating) in enumerate(REVIEW_TEMPLATES * 5):
+        reviewer = REVIEWERS[(hotel_index + review_index) % len(REVIEWERS)]
+        text = template.format(city=city, area=area, feature=feature)
+        reviews.append((reviewer, text, rating))
+    return reviews
 
 
 def reset_curated_dataset() -> None:
+    hotels_data = build_hotels()
+    all_review_texts = [
+        text
+        for hotel_index, hotel in enumerate(hotels_data)
+        for _, text, _ in build_reviews(hotel, hotel_index)
+    ]
+    analyses = sentiment_analyzer.analyze_many(all_review_texts)
+    if len(analyses) != len(all_review_texts):
+        raise RuntimeError("Sentiment analysis returned an incomplete result batch")
+
     db = SessionLocal()
     try:
         db.query(Review).delete(synchronize_session=False)
         db.query(Hotel).delete(synchronize_session=False)
+        analysis_index = 0
 
-        for hotel_data in SAMPLE_HOTELS:
+        for hotel_index, hotel_data in enumerate(hotels_data):
             hotel = Hotel(
                 name=hotel_data["name"],
                 location=hotel_data["location"],
@@ -70,25 +129,28 @@ def reset_curated_dataset() -> None:
             db.add(hotel)
             db.flush()
 
-            reviews = REVIEWS_BY_HOTEL[hotel.name]
+            reviews = build_reviews(hotel_data, hotel_index)
             scores = []
             for reviewer_name, review_text, rating in reviews:
-                label, score = analyze_review(review_text)
+                analysis = analyses[analysis_index]
+                analysis_index += 1
+                if "error" in analysis:
+                    raise RuntimeError(f"Could not analyze seeded review: {analysis['error']}")
                 db.add(Review(
                     hotel_id=hotel.id,
                     reviewer_name=reviewer_name,
                     review_text=review_text,
-                    sentiment_label=label,
-                    sentiment_score=score,
+                    sentiment_label=analysis["label"],
+                    sentiment_score=analysis["score"],
                 ))
-                scores.append(score)
+                scores.append(analysis["score"])
 
             hotel.total_reviews = len(scores)
             hotel.average_sentiment = sum(scores) / len(scores)
             hotel.rating = sum(rating for _, _, rating in reviews) / len(reviews)
 
         db.commit()
-        print(f"Created {len(SAMPLE_HOTELS)} hotels and {sum(len(v) for v in REVIEWS_BY_HOTEL.values())} meaningful reviews.")
+        print(f"Created {HOTELS_COUNT} hotels and {len(all_review_texts)} meaningful reviews.")
     except Exception:
         db.rollback()
         raise

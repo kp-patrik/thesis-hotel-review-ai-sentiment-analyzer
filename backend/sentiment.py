@@ -93,5 +93,45 @@ class SentimentAnalyzer:
             "confidence": 0.0
         }
 
+    def analyze_many(self, texts: list[str]) -> list[Dict[str, Any]]:
+        """Analyze multiple texts in one model call for efficient data seeding."""
+        if not self.classifier:
+            return [
+                {"label": "NEUTRAL", "score": 0.5, "confidence": 0.0, "error": "Model not loaded"}
+                for _ in texts
+            ]
+        if not texts:
+            return []
+        if any(not isinstance(text, str) or not text.strip() for text in texts):
+            raise ValueError("All texts must be non-empty strings")
+
+        try:
+            batch_results = self.classifier(
+                [text.strip() for text in texts],
+                truncation=True,
+                max_length=512,
+            )
+            if batch_results and isinstance(batch_results[0], dict):
+                batch_results = [batch_results]
+
+            analyzed = []
+            for results in batch_results:
+                best_result = max(results, key=lambda item: item["score"])
+                label = best_result["label"]
+                confidence = best_result["score"]
+                score = 0.5 + confidence * 0.5 if label == "POSITIVE" else 0.5 - confidence * 0.5
+                analyzed.append({
+                    "label": label,
+                    "score": round(score, 3),
+                    "confidence": round(confidence, 3),
+                })
+            return analyzed
+        except Exception as error:
+            logger.error("Error analyzing sentiment batch: %s", error)
+            return [
+                {"label": "NEUTRAL", "score": 0.5, "confidence": 0.0, "error": str(error)}
+                for _ in texts
+            ]
+
 # Global instance
 sentiment_analyzer = SentimentAnalyzer()
