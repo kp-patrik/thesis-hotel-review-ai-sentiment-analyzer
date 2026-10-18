@@ -36,7 +36,7 @@ export default function Home() {
             </ul>
           </div>
 
-          <div className="hero__visual" aria-hidden>
+          <div className="hero__visual">
             <svg className="blob blob--1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden>
               <defs>
                 <linearGradient id="g1" x1="0" x2="1">
@@ -47,31 +47,45 @@ export default function Home() {
               <path d="M120,-160C168,-118,186,-52,189,16C192,84,179,156,134,195C89,234,12,241,-43,216C-98,191,-132,134,-168,76C-204,18,-241,-40,-214,-90C-187,-140,-96,-182,-22,-177C52,-172,96,-202,120,-160Z" fill="url(#g1)"/>
             </svg>
 
-            <div className="phone-preview">
-              <div className="phone-header">
-                <div className="pill" />
-                <div className="dot" />
-              </div>
-              <div className="phone-body">
-                <div className="card small">
-                  <div className="card-title">Hotel Bella</div>
-                  <div className="card-text">"Great location, clean rooms."</div>
+            <div className="insight-preview">
+              <div className="insight-preview__top">
+                <div>
+                  <span className="insight-preview__eyebrow">AI hotel insight</span>
+                  <h2>Hotel Bella</h2>
+                  <p>New York · 1,248 reviews analyzed</p>
                 </div>
-
-                <div className="card small highlight">
-                  <div className="card-title">Summary</div>
-                  <div className="card-text">Mostly positive — quick clean stop.</div>
-                </div>
-
-                <div className="card small">
-                  <div className="card-title">Actions</div>
-                  <div className="card-text">Write review • See stats</div>
-                </div>
-
-                <div className="phone-cta">
-                  <Link to="/hotels" className="btn btn--primary small">Open app</Link>
+                <div className="insight-preview__score">
+                  <strong>82</strong><span>/100</span>
+                  <small>Excellent</small>
                 </div>
               </div>
+
+              <div className="insight-preview__bar">
+                <span className="insight-preview__positive" />
+                <span className="insight-preview__neutral" />
+                <span className="insight-preview__negative" />
+              </div>
+              <div className="insight-preview__legend">
+                <span><i className="dot-positive" /> Positive <b>74%</b></span>
+                <span><i className="dot-neutral" /> Mixed <b>16%</b></span>
+                <span><i className="dot-negative" /> Negative <b>10%</b></span>
+              </div>
+
+              <div className="insight-preview__themes">
+                <div className="insight-preview__theme">
+                  <span className="theme-icon theme-icon--good">↑</span>
+                  <div><strong>Guests love</strong><p>Location · Clean rooms · Staff</p></div>
+                </div>
+                <div className="insight-preview__theme">
+                  <span className="theme-icon theme-icon--watch">!</span>
+                  <div><strong>Worth noting</strong><p>Small rooms · Busy breakfast</p></div>
+                </div>
+              </div>
+
+              <blockquote className="insight-preview__quote">
+                “The location was perfect and the staff made us feel at home.”
+              </blockquote>
+              <Link to="/hotels" className="insight-preview__link">Explore hotel insights <span>→</span></Link>
             </div>
 
             <svg className="blob blob--2" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden>

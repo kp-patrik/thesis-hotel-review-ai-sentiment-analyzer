@@ -36,8 +36,7 @@ body {
 }
 
 [data-theme='dark'] .home-page .hero__copy,
-[data-theme='dark'] .home-page .phone-preview,
-[data-theme='dark'] .home-page .card.small {
+[data-theme='dark'] .home-page .insight-preview {
   background: var(--surface);
   color: var(--text);
   border-color: var(--border);
@@ -170,7 +169,7 @@ body {
   z-index: 1;
   margin-top: -6px;
   min-height: 150px;
-  pointer-events: none; /* decorative only */
+  pointer-events: none;
 }
 
 /* floating blobs: responsive with clamp so they don't force horizontal scroll */
@@ -204,73 +203,55 @@ body {
   100% { transform: translateY(0) rotate(-6deg) scale(1); }
 }
 
-/* PHONE PREVIEW: responsive sizing using clamp to prevent overflow on wide screens */
-.phone-preview {
-  width: clamp(180px, 46vw, 420px);
+/* AI insight preview */
+.insight-preview {
+  width: min(100%, 460px);
   border-radius: 22px;
-  background: linear-gradient(180deg,#ffffff,#fbfdff);
-  box-shadow: 0 12px 40px rgba(15,23,42,0.08);
-  border: 1px solid #eef2f6;
-  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 18px 48px var(--shadow);
+  border: 1px solid var(--border);
+  padding: 24px;
   z-index: 2;
   transform: translateY(12px) scale(0.98);
   opacity: 0;
   transition: transform 520ms cubic-bezier(.2,.9,.25,1), opacity 520ms ease;
+  pointer-events: auto;
 }
-.home-page.is-loaded .phone-preview {
+.home-page.is-loaded .insight-preview {
   transform: translateY(0) scale(1);
   opacity: 1;
 }
-
-/* phone details */
-.phone-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  background: transparent;
-}
-.phone-header .pill {
-  height: 8px;
-  width: 110px;
-  background: linear-gradient(90deg,#e9efff,#f7fbff);
-  border-radius: 999px;
-}
-.phone-header .dot {
-  width: 12px;
-  height: 12px;
-  background: #dbeafe;
-  border-radius: 999px;
-}
-.phone-body {
-  padding: 12px;
-  display: grid;
-  gap: 10px;
-}
-
-/* phone cards with staggered entrance */
-.card.small {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 10px;
-  border: 1px solid #eef2f6;
-  transform: translateY(8px);
-  opacity: 0;
-  transition: transform 420ms cubic-bezier(.2,.9,.25,1), opacity 420ms ease;
-}
-.home-page.is-loaded .card.small:nth-child(1) { transition-delay: 120ms; transform: translateY(0); opacity: 1; }
-.home-page.is-loaded .card.small:nth-child(2) { transition-delay: 200ms; transform: translateY(0); opacity: 1; }
-.home-page.is-loaded .card.small:nth-child(3) { transition-delay: 280ms; transform: translateY(0); opacity: 1; }
-
-.card.small.highlight {
-  background: linear-gradient(90deg,#eef2ff,#f8f9ff);
-  border: 1px solid rgba(86,109,250,0.08);
-}
-.card-title { font-weight: 700; color: #0f172a; font-size: 0.95rem; }
-.card-text { color: #475569; font-size: 0.86rem; }
-
-.phone-cta { display: flex; justify-content: center; margin-top: 6px; }
-.btn.small { padding: 8px 12px; border-radius: 10px; font-weight: 700; font-size: 0.88rem; }
+.insight-preview__top { align-items: flex-start; display: flex; justify-content: space-between; gap: 16px; }
+.insight-preview__eyebrow { color: var(--brand-color); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.insight-preview h2 { color: var(--text); font-size: 1.55rem; margin: 5px 0 2px; }
+.insight-preview__top p { color: var(--text-muted); font-size: .82rem; margin: 0; }
+.insight-preview__score { align-items: baseline; background: var(--surface-muted); border: 1px solid var(--border); border-radius: 14px; color: var(--brand-color); display: flex; flex-wrap: wrap; justify-content: center; padding: 10px 12px; width: 78px; }
+.insight-preview__score strong { font-size: 1.65rem; line-height: 1; }
+.insight-preview__score span { font-size: .75rem; }
+.insight-preview__score small { color: var(--text-muted); font-size: .65rem; margin-top: 4px; width: 100%; text-align: center; }
+.insight-preview__bar { background: var(--surface-muted); border-radius: 999px; display: flex; gap: 3px; height: 9px; margin-top: 24px; overflow: hidden; }
+.insight-preview__bar span { display: block; height: 100%; }
+.insight-preview__positive { background: #31b875; width: 74%; }
+.insight-preview__neutral { background: #f0b34b; width: 16%; }
+.insight-preview__negative { background: #e36b73; width: 10%; }
+.insight-preview__legend { color: var(--text-muted); display: flex; font-size: .7rem; gap: 12px; margin-top: 9px; }
+.insight-preview__legend span { align-items: center; display: inline-flex; gap: 4px; }
+.insight-preview__legend b { color: var(--text); }
+.insight-preview__legend i { border-radius: 50%; display: inline-block; height: 7px; width: 7px; }
+.dot-positive { background: #31b875; }
+.dot-neutral { background: #f0b34b; }
+.dot-negative { background: #e36b73; }
+.insight-preview__themes { border-top: 1px solid var(--border); display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 20px; padding-top: 18px; }
+.insight-preview__theme { align-items: flex-start; display: flex; gap: 8px; }
+.insight-preview__theme strong { color: var(--text); display: block; font-size: .78rem; }
+.insight-preview__theme p { color: var(--text-muted); font-size: .72rem; line-height: 1.35; margin: 3px 0 0; }
+.theme-icon { align-items: center; border-radius: 8px; display: flex; flex: 0 0 25px; font-weight: 800; height: 25px; justify-content: center; }
+.theme-icon--good { background: rgba(49,184,117,.13); color: #31b875; }
+.theme-icon--watch { background: rgba(240,179,75,.16); color: #c88818; }
+.insight-preview__quote { border-left: 3px solid var(--brand-color); color: var(--text-muted); font-size: .82rem; font-style: italic; line-height: 1.45; margin: 20px 0 16px; padding-left: 12px; }
+.insight-preview__link { color: var(--brand-color); font-size: .82rem; font-weight: 800; text-decoration: none; }
+.insight-preview__link span { display: inline-block; margin-left: 4px; transition: transform .15s ease; }
+.insight-preview__link:hover span { transform: translateX(3px); }
 
 /* FEATURES */
 .features {
@@ -326,7 +307,7 @@ body {
 /* Hover/interaction details for desktop */
 @media (hover: hover) and (pointer: fine) {
   .feature:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 48px rgba(15,23,42,0.06); }
-  .phone-preview:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 50px rgba(15,23,42,0.09); }
+  .insight-preview:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 50px rgba(15,23,42,0.09); }
   .btn--primary:hover { transform: translateY(-3px) scale(1.01); }
 }
 
@@ -361,7 +342,7 @@ body {
     height: 360px;
   }
 
-  .phone-preview { width: 420px; max-width: 420px; min-width: 320px; border-radius: 28px; }
+  .insight-preview { width: 420px; max-width: 420px; }
 
   .features-grid {
     grid-template-columns: repeat(3, 1fr);
