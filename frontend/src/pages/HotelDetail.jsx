@@ -56,6 +56,7 @@ const HotelDetail = () => {
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [carouselIndex, setCarouselIndex] = useState(null);
   const [reviewFilter, setReviewFilter] = useState('all');
 
   const fetchHotelDetails = useCallback(async () => {
@@ -73,6 +74,24 @@ const HotelDetail = () => {
   useEffect(() => {
     fetchHotelDetails();
   }, [fetchHotelDetails]);
+
+  useEffect(() => {
+    if (carouselIndex === null) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setCarouselIndex(null);
+      if (event.key === 'ArrowLeft') setCarouselIndex((current) => (current === 0 ? 2 : current - 1));
+      if (event.key === 'ArrowRight') setCarouselIndex((current) => (current === 2 ? 0 : current + 1));
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [carouselIndex]);
 
   const handleReviewAdded = () => {
     // Refresh hotel details to get updated data
@@ -137,6 +156,14 @@ const HotelDetail = () => {
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(hotel.location)}&output=embed`;
 
+  const showPreviousPhoto = () => {
+    setCarouselIndex((current) => (current === 0 ? gallery.length - 1 : current - 1));
+  };
+
+  const showNextPhoto = () => {
+    setCarouselIndex((current) => (current === gallery.length - 1 ? 0 : current + 1));
+  };
+
   return (
     <div className="container">
       <Link to="/" className="btn btn-secondary" style={{ marginBottom: '1rem' }}>
@@ -158,10 +185,17 @@ const HotelDetail = () => {
           </div>
         </div>
         <div className="hotel-hero__gallery">
-          <img src={gallery[0]} alt={`${hotel.name} exterior`} />
+          <button type="button" className="hotel-gallery__image hotel-gallery__image--main" onClick={() => setCarouselIndex(0)} aria-label={`View ${hotel.name} exterior photo`}>
+            <img src={gallery[0]} alt={`${hotel.name} exterior`} />
+            <span>View photos</span>
+          </button>
           <div>
-            <img src={gallery[1]} alt={`${hotel.name} room`} />
-            <img src={gallery[2]} alt={`${hotel.name} interior`} />
+            <button type="button" className="hotel-gallery__image" onClick={() => setCarouselIndex(1)} aria-label={`View ${hotel.name} room photo`}>
+              <img src={gallery[1]} alt={`${hotel.name} room`} />
+            </button>
+            <button type="button" className="hotel-gallery__image" onClick={() => setCarouselIndex(2)} aria-label={`View ${hotel.name} interior photo`}>
+              <img src={gallery[2]} alt={`${hotel.name} interior`} />
+            </button>
           </div>
         </div>
       </section>
@@ -258,6 +292,36 @@ const HotelDetail = () => {
           </div>
         )}
       </div>
+
+      {carouselIndex !== null && (
+        <div
+          className="hotel-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${hotel.name} photo gallery`}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setCarouselIndex(null);
+          }}
+          tabIndex="-1"
+        >
+          <div className="hotel-lightbox__content">
+            <button type="button" className="hotel-lightbox__close" onClick={() => setCarouselIndex(null)} aria-label="Close photo gallery">×</button>
+            <button type="button" className="hotel-lightbox__arrow hotel-lightbox__arrow--left" onClick={showPreviousPhoto} aria-label="Previous photo">‹</button>
+            <img className="hotel-lightbox__main-image" src={gallery[carouselIndex]} alt={`${hotel.name} photo ${carouselIndex + 1}`} />
+            <button type="button" className="hotel-lightbox__arrow hotel-lightbox__arrow--right" onClick={showNextPhoto} aria-label="Next photo">›</button>
+            <div className="hotel-lightbox__footer">
+              <span>{carouselIndex + 1} / {gallery.length}</span>
+              <div className="hotel-lightbox__thumbnails">
+                {gallery.map((image, index) => (
+                  <button type="button" key={image} className={index === carouselIndex ? 'active' : ''} onClick={() => setCarouselIndex(index)} aria-label={`Show photo ${index + 1}`}>
+                    <img src={image} alt="" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
