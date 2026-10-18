@@ -167,8 +167,8 @@ export default function MyReviews() {
       <div style={{
         padding: 18,
         borderRadius: 12,
-        background: "#fff",
-        boxShadow: "0 8px 24px rgba(33,37,41,0.04)"
+        background: "var(--surface)",
+        boxShadow: "0 8px 24px var(--shadow)"
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h2 style={{ margin: 0 }}>My reviews</h2>
@@ -190,8 +190,8 @@ export default function MyReviews() {
                 <article key={r.id || JSON.stringify(r)} style={{
                   padding: 12,
                   borderRadius: 8,
-                  border: "1px solid #eef2f6",
-                  background: "#fff",
+                  border: "1px solid var(--border)",
+                  background: "var(--surface-muted)",
                   display: "flex",
                   gap: 12,
                   alignItems: "flex-start",
@@ -200,10 +200,10 @@ export default function MyReviews() {
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                       <div style={{ fontWeight: 700 }}>{r.title || r.hotel_name || `Review #${r.id || "?"}`}</div>
-                      <div style={{ color: "#6c757d", fontSize: 13 }}>{r.created_at ? new Date(r.created_at).toLocaleString() : ""}</div>
+                      <div style={{ color: "var(--text-muted)", fontSize: 13 }}>{r.created_at ? new Date(r.created_at).toLocaleString() : ""}</div>
                       <div style={{ marginLeft: "auto", color: "#5360d6", fontWeight: 700 }}>{r.rating ? `${r.rating}★` : ""}</div>
                     </div>
-                    <div style={{ marginTop: 8, color: "#495057" }}>{r.review_text || r.text || r.body || r.comment || ""}</div>
+                    <div style={{ marginTop: 8, color: "var(--text)" }}>{r.review_text || r.text || r.body || r.comment || ""}</div>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>

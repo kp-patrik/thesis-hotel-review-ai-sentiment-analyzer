@@ -32,8 +32,8 @@ export default function Profile() {
           minWidth: 160,
           padding: 16,
           borderRadius: 12,
-          background: "#fff",
-          boxShadow: "0 8px 24px rgba(33,37,41,0.06)"
+          background: "var(--surface)",
+          boxShadow: "0 8px 24px var(--shadow)"
         }}>
           <div style={{
             width: 96,
@@ -50,7 +50,7 @@ export default function Profile() {
           }}>{initials}</div>
 
           <div style={{ fontWeight: 700, fontSize: 18 }}>{displayName}</div>
-          {user?.email && <div style={{ color: "#6c757d", marginTop: 6 }}>{user.email}</div>}
+          {user?.email && <div style={{           color: "var(--text-muted)", marginTop: 6 }}>{user.email}</div>}
           <div style={{ marginTop: 12 }}>
             <Link to="/profile/edit" className="btn btn--outline" style={{ padding: "8px 10px" }}>Edit profile</Link>
           </div>
@@ -60,8 +60,8 @@ export default function Profile() {
           flex: 1,
           padding: 18,
           borderRadius: 12,
-          background: "#fff",
-          boxShadow: "0 8px 24px rgba(33,37,41,0.04)"
+          background: "var(--surface)",
+          boxShadow: "0 8px 24px var(--shadow)"
         }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <h2 style={{ margin: 0 }}>Account</h2>
@@ -72,28 +72,28 @@ export default function Profile() {
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <div>
-              <div style={{ color: "#6c757d", fontSize: 13 }}>Username</div>
+              <div style={{ color: "var(--text-muted)", fontSize: 13 }}>Username</div>
               <div style={{ fontWeight: 700 }}>{user.username || "-"}</div>
             </div>
             <div>
-              <div style={{ color: "#6c757d", fontSize: 13 }}>User ID</div>
+              <div style={{ color: "var(--text-muted)", fontSize: 13 }}>User ID</div>
               <div style={{ fontWeight: 700 }}>{user.id ?? "-"}</div>
             </div>
             <div>
-              <div style={{ color: "#6c757d", fontSize: 13 }}>Email</div>
+              <div style={{ color: "var(--text-muted)", fontSize: 13 }}>Email</div>
               <div style={{ fontWeight: 700 }}>{user.email || "-"}</div>
             </div>
             <div>
-              <div style={{ color: "#6c757d", fontSize: 13 }}>Member since</div>
+              <div style={{ color: "var(--text-muted)", fontSize: 13 }}>Member since</div>
               <div style={{ fontWeight: 700 }}>{user.created_at ? new Date(user.created_at).toLocaleDateString() : "-"}</div>
             </div>
           </div>
 
-          <hr style={{ margin: "18px 0", border: "none", borderTop: "1px solid #eef2f6" }} />
+          <hr style={{ margin: "18px 0", border: "none", borderTop: "1px solid var(--border)" }} />
 
           <div>
             <h3 style={{ marginTop: 0 }}>Preferences</h3>
-            <p style={{ color: "#6c757d" }}>Manage your preferences here. (This is a demo UI — wire to the real settings API as needed.)</p>
+            <p style={{ color: "var(--text-muted)" }}>Manage your preferences here. (This is a demo UI — wire to the real settings API as needed.)</p>
           </div>
         </div>
       </div>
