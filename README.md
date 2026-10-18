@@ -65,8 +65,8 @@ interactive features.
   <tr>
     <td align="center" width="33%">
       <strong>Rotating hotel insight</strong><br><br>
-      <img src="./docs/screenshots/00-landing-page.png" alt="Landing page with rotating AI Hotel Insight card" width="280"><br><br>
-      <sub>Show the landing page's featured, well-rated hotel and direct hotel link.</sub><br><br>
+      <img src="./docs/screenshots/00-rotating-hotel-insight.png" alt="Landing page with rotating AI Hotel Insight card" width="280"><br><br>
+      <sub></sub><br><br>
       <code>00-landing-page.png</code>
     </td>
     <td align="center" width="33%">
