@@ -57,48 +57,26 @@ The project demonstrates how an AI model can be integrated into a practical web 
 
 ### 🌟 Optional feature showcase
 
-These screenshots are not required for the core gallery, but they make the
-repository more expressive by highlighting some of the application's most
-interactive features.
-
 <table>
   <tr>
     <td align="center" width="33%">
       <strong>Rotating hotel insight</strong><br><br>
       <img src="./docs/screenshots/00-rotating-hotel-insight.png" alt="Landing page with rotating AI Hotel Insight card" width="280"><br><br>
       <sub></sub><br><br>
-      <code>00-landing-page.png</code>
     </td>
     <td align="center" width="33%">
       <strong>Interactive photo carousel</strong><br><br>
       <img src="./docs/screenshots/08-photo-carousel.png" alt="Hotel photo carousel showing a selected room image" width="280"><br><br>
-      <sub>Open a room or exterior image with thumbnails, navigation controls, and the image counter visible.</sub><br><br>
-      <code>08-photo-carousel.png</code>
+      <br><br>
     </td>
     <td align="center" width="33%">
       <strong>Review sentiment filters</strong><br><br>
       <img src="./docs/screenshots/09-review-filters.png" alt="Hotel reviews filtered by sentiment" width="280"><br><br>
-      <sub>Show the hotel review list with a positive, neutral, or negative filter selected.</sub><br><br>
-      <code>09-review-filters.png</code>
+      <br><br>
     </td>
   </tr>
 </table>
 
-<p align="center">
-  <em>Tip: Capture these optional views in the same browser size and theme as
-  the main gallery for a consistent visual presentation.</em>
-</p>
-
-Do not include passwords, email addresses, API keys, tokens, local file paths, or personal information in screenshots.
-
-### Screenshot presentation tips
-
-- Use `1366 × 768` or wider for the main gallery.
-- Use dark mode for the primary set and light mode for one comparison screenshot.
-- Capture the photo carousel with the selected image centered and its thumbnails visible.
-- Capture the analyzer after a result has loaded, including the sentiment label and score.
-- Capture summaries after generation completes, including the positive/negative breakdown.
-- Use demo accounts and fictional content only.
 
 ## ✨ Main Features
 
