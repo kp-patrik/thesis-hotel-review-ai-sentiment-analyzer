@@ -25,11 +25,22 @@ const Register = () => {
 
     setLoading(true);
     try {
-      await authService.register(form.username.trim(), form.password, form.email || undefined);
+      await authService.register(
+        form.username.trim(),
+        form.password,
+        form.email.trim() || undefined
+      );
       setSuccess('Account created. You can now log in.');
       setTimeout(() => navigate('/login'), 1000);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Registration failed');
+      const detail = err.response?.data?.detail;
+      if (detail) {
+        setError(detail);
+      } else if (err.request) {
+        setError('Could not reach the backend. Make sure the API is running at http://localhost:8000.');
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -52,6 +63,7 @@ const Register = () => {
               onChange={handleChange}
               className="form-control"
               disabled={loading}
+              required
             />
           </div>
 
@@ -63,6 +75,7 @@ const Register = () => {
               onChange={handleChange}
               className="form-control"
               disabled={loading}
+              type="email"
             />
           </div>
 
@@ -76,6 +89,8 @@ const Register = () => {
               className="form-control"
               disabled={loading}
               placeholder="Choose a strong password"
+              minLength={6}
+              required
             />
           </div>
 
