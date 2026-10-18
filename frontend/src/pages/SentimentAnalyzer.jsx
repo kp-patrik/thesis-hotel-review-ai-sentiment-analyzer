@@ -115,14 +115,15 @@ const SentimentAnalyzer = () => {
 
         {/* Results */}
         {result && (
-          <div className="card" style={{ background: '#f8f9fa', border: '1px solid #e9ecef' }}>
+          <div className="card" style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)' }}>
             <h4>Analysis Result</h4>
             
             <div style={{ marginBottom: '1rem' }}>
               <strong>Text:</strong>
               <p style={{ 
                 fontStyle: 'italic', 
-                background: 'white', 
+                background: 'var(--surface)',
+                color: 'var(--text)',
                 padding: '1rem', 
                 borderRadius: '5px',
                 marginTop: '0.5rem'
@@ -161,7 +162,7 @@ const SentimentAnalyzer = () => {
               </div>
             </div>
 
-            <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
+            <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
               <p>
                 <strong>How to read the scores:</strong><br/>
                 • Sentiment Score: 0-50% = Negative, 50-60% = Neutral, 60-100% = Positive<br/>
