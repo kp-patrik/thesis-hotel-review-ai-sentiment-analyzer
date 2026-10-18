@@ -57,10 +57,14 @@ Do not include passwords, email addresses, API keys, tokens, local file paths, o
 - **AI sentiment analysis** using a Hugging Face DistilBERT transformer model.
 - **Interactive sentiment analyzer** for testing custom review text.
 - **Hotel catalog** with descriptions, locations, review counts, and aggregate sentiment.
+- **Rich hotel detail pages** with category-based photo galleries, a click-to-open carousel, amenities, embedded location maps, and review filters.
 - **Curated development data** with 100 hotels and 50 realistic, hotel-specific reviews per hotel, using varied positive, mixed, and negative sentiment profiles instead of placeholder text.
 - **Review submission** with automatic sentiment classification and score calculation.
-- **Review summaries** generated from the reviews associated with a hotel.
+- **Review summaries** generated from representative reviews across the full hotel dataset, with factual positive/negative sentiment breakdowns.
 - **User authentication** with password hashing, JWT access tokens, email verification, and password-reset flows.
+- **Editable user profiles** with username, email, bio, profile photo, and protected password changes.
+- **Persistent light/dark theme** across the application, including the analyzer, summaries, profiles, reviews, and hotel pages.
+- **Dynamic landing-page hotel insight** featuring a different well-rated hotel on reload and a direct link to its detail page.
 - **Persistent storage** using SQLite and SQLAlchemy.
 - **REST API documentation** generated automatically by FastAPI and available through Swagger UI.
 - **Responsive React interface** with protected pages, loading states, error handling, and reusable components.
@@ -197,6 +201,10 @@ Open <http://localhost:5173>.
 
 The default frontend configuration expects the backend at `http://127.0.0.1:8000`. Change `VITE_API_BASE_URL` in `frontend/.env.local` if the API runs elsewhere.
 
+### Development email behavior
+
+When SMTP settings are not configured, verification and password-reset messages are printed in the backend terminal. This is intentional for local development; do not use console-generated tokens as a production email workflow.
+
 ## 🔌 API Overview
 
 | Method | Endpoint | Purpose | Authentication |
@@ -208,8 +216,16 @@ The default frontend configuration expects the backend at `http://127.0.0.1:8000
 | `POST` | `/register` | Create a user account | Public |
 | `POST` | `/login` | Obtain a JWT access token | Public |
 | `GET` | `/me` | Get the authenticated user | JWT |
+| `PUT` | `/me` | Update username, email, bio, profile photo, or password | JWT |
 | `POST` | `/reviews` | Submit and analyze a review | JWT |
 | `POST` | `/summarize` | Summarize hotel reviews | Public |
+
+### Review and summary behavior
+
+- Review authors are always taken from the authenticated account; clients cannot choose a different reviewer name.
+- The sentiment model is binary (`POSITIVE` or `NEGATIVE`). The interface uses aggregate mixed/neutral views for review statistics, but the model itself does not provide a native neutral class.
+- Summary generation samples reviews across the entire hotel review set instead of truncating only the first reviews. This helps preserve negative feedback for hotels with lower aggregate scores.
+- Hotel gallery photos currently use stable Unsplash image URLs selected by hotel category. Replace them with locally hosted or licensed production assets before deployment if required.
 
 ## ✅ Verification
 
