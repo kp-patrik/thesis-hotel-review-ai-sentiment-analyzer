@@ -142,8 +142,27 @@ const callOrFallback = async (fnName, payload, fallbackPath) => {
 
 export const register = (payload) => callOrFallback("register", payload, "/register");
 export const updateProfile = (payload) => {
-  if (typeof api.updateProfile === "function") return api.updateProfile(payload);
-  return callOrFallback("updateProfile", payload, "/me");
+  if (typeof apiModule.authService?.updateProfile === "function") {
+    return apiModule.authService.updateProfile(payload);
+  }
+  return fetch(`${getApiBase()}/me`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token") || localStorage.getItem("access_token")}`,
+    },
+    body: JSON.stringify(payload),
+  }).then(async (res) => {
+    const data = await parseResponseBody(res);
+    if (!res.ok) {
+      const error = new Error(data?.detail || data?.error || res.statusText);
+      error.status = res.status;
+      error.body = data;
+      throw error;
+    }
+    return data;
+  });
 };
 export const requestPasswordReset = (payload) => callOrFallback("requestPasswordReset", payload, "/request-password-reset");
 export const resetPassword = (payload) => callOrFallback("resetPassword", payload, "/reset-password");
