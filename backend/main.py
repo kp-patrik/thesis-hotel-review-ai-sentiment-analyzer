@@ -342,6 +342,28 @@ async def create_review(request: ReviewCreateRequest, db: Session = Depends(get_
     )
 
 
+@app.get("/my-reviews", response_model=List[ReviewResponse])
+async def list_my_reviews(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    reviews = (
+        db.query(Review)
+        .filter(Review.reviewer_name == current_user.username)
+        .order_by(Review.created_at.desc())
+        .all()
+    )
+    return [
+        ReviewResponse(
+            id=review.id,
+            hotel_id=review.hotel_id,
+            reviewer_name=review.reviewer_name,
+            review_text=review.review_text,
+            sentiment_label=review.sentiment_label,
+            sentiment_score=review.sentiment_score,
+            created_at=review.created_at.isoformat() if review.created_at else ""
+        )
+        for review in reviews
+    ]
+
+
 # --- Summarization ---
 @app.post("/summarize", response_model=SummarizationResponse)
 async def summarize_reviews(request: SummarizationRequest, db: Session = Depends(get_db)):

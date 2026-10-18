@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import RequestPasswordReset from './pages/RequestPasswordReset';
 import ResetPassword from './pages/ResetPassword';
+import VerifyEmail from './pages/VerifyEmail';
 import Profile from './pages/Profile';
 import MyReviews from './pages/MyReviews';
 import Home from './pages/Home';
@@ -70,6 +71,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/request-password-reset" element={<RequestPasswordReset />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
             </Routes>
           </main>
 
