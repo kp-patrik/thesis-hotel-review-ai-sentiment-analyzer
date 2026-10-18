@@ -43,8 +43,11 @@ class SentimentAnalyzer:
             # Get prediction
             results = self.classifier(text)
             
-            # Process results (results is a list of dicts with 'label' and 'score')
+            # Text classification returns one list of scores per input text.
             if results and len(results) > 0:
+                if isinstance(results[0], list):
+                    results = results[0]
+
                 # Get the highest scoring sentiment
                 best_result = max(results, key=lambda x: x['score'])
                 
