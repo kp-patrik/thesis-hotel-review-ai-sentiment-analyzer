@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+transformers
+torch
+sentencepiece
+accelerate
+PyJWT
+passlib[bcrypt]
+python-dotenv
+faker

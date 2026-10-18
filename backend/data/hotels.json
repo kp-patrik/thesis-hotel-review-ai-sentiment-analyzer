@@ -1,0 +1,90 @@
+{
+  "hotels": [
+    {
+      "id": 1,
+      "name": "Grand Plaza Hotel",
+      "location": "New York, NY",
+      "description": "Luxury hotel in the heart of Manhattan with stunning city views.",
+      "category": "luxury",
+      "price_range": "$$$",
+      "amenities": ["wifi", "spa", "gym", "restaurant", "parking", "concierge"],
+      "contact": {
+        "phone": "+1-212-555-0123",
+        "email": "info@grandplaza.com",
+        "website": "https://grandplaza.com"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Ocean Breeze Resort",
+      "location": "Miami, FL",
+      "description": "Beachfront resort with world-class amenities and spa services.",
+      "category": "resort",
+      "price_range": "$$$$",
+      "amenities": ["beach", "pool", "spa", "restaurant", "wifi", "water_sports"],
+      "contact": {
+        "phone": "+1-305-555-0456",
+        "email": "reservations@oceanbreeze.com",
+        "website": "https://oceanbreeze.com"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Mountain View Lodge",
+      "location": "Aspen, CO",
+      "description": "Cozy mountain lodge perfect for skiing and outdoor adventures.",
+      "category": "lodge",
+      "price_range": "$$$",
+      "amenities": ["ski", "fireplace", "wifi", "restaurant", "parking", "hiking"],
+      "contact": {
+        "phone": "+1-970-555-0789",
+        "email": "stay@mountainview.com",
+        "website": "https://mountainviewlodge.com"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Downtown Business Hotel",
+      "location": "Chicago, IL",
+      "description": "Modern business hotel with conference facilities and fine dining.",
+      "category": "business",
+      "price_range": "$$",
+      "amenities": ["wifi", "conference", "restaurant", "gym", "parking", "business_center"],
+      "contact": {
+        "phone": "+1-312-555-0321",
+        "email": "bookings@downtownbusiness.com",
+        "website": "https://downtownbusiness.com"
+      }
+    },
+    {
+      "id": 5,
+      "name": "Historic Boutique Inn",
+      "location": "Charleston, SC",
+      "description": "Charming historic inn with southern hospitality and antique furnishings.",
+      "category": "boutique",
+      "price_range": "$$$",
+      "amenities": ["wifi", "restaurant", "historic", "garden", "library", "courtyard"],
+      "contact": {
+        "phone": "+1-843-555-0654",
+        "email": "welcome@historicinn.com",
+        "website": "https://historicboutiqueinn.com"
+      }
+    }
+  ],
+  "sample_reviews": [
+    {
+      "hotel_id": 1,
+      "reviewer_name": "Alice Johnson",
+      "review_text": "Outstanding hotel! The staff was incredibly helpful and the room was spotless. Will definitely stay here again!",
+      "rating": 5,
+      "date": "2024-01-15"
+    },
+    {
+      "hotel_id": 2,
+      "reviewer_name": "Carol Davis",
+      "review_text": "Amazing beachfront views! The resort exceeded all expectations. Perfect for a romantic getaway.",
+      "rating": 5,
+      "date": "2024-02-20"
+    }
+  ]
+}
