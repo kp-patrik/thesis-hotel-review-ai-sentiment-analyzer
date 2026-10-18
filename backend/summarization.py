@@ -84,16 +84,33 @@ class ReviewSummarizer:
                 clean_review = " ".join(review.strip().split())
                 processed_reviews.append(clean_review)
         
-        # Combine and truncate
-        combined_text = " ".join(processed_reviews)
-        max_chars = 600  # Conservative limit for t5-small
-        
+        # Sample across the full list so ordering cannot hide later complaints.
+        sample_size = min(len(processed_reviews), 12)
+        if len(processed_reviews) > sample_size:
+            indexes = [
+                round(index * (len(processed_reviews) - 1) / (sample_size - 1))
+                for index in range(sample_size)
+            ]
+            representative_reviews = [processed_reviews[index] for index in indexes]
+        else:
+            representative_reviews = processed_reviews
+
+        combined_text = " ".join(representative_reviews)
+        max_chars = 1800
+
         if len(combined_text) > max_chars:
-            combined_text = combined_text[:max_chars] + "..."
+            combined_text = combined_text[:max_chars].rsplit(" ", 1)[0] + "..."
         
         return combined_text
     
-    def summarize_reviews(self, reviews: List[str], max_length: int = 100, min_length: int = 20) -> Dict[str, Any]:
+    def summarize_reviews(
+        self,
+        reviews: List[str],
+        max_length: int = 100,
+        min_length: int = 20,
+        sentiment_counts: Dict[str, int] | None = None,
+        sentiment_examples: Dict[str, str] | None = None,
+    ) -> Dict[str, Any]:
         """Summarize a list of reviews"""
         if not reviews:
             return {
@@ -132,6 +149,19 @@ class ReviewSummarizer:
                 )
                 
                 summary_text = summary_result[0]['summary_text'] if summary_result else "Unable to generate summary."
+                if sentiment_counts:
+                    total = sum(sentiment_counts.values())
+                    positive = sentiment_counts.get("POSITIVE", 0)
+                    negative = sentiment_counts.get("NEGATIVE", 0)
+                    summary_text = (
+                        f"{summary_text} Overall sentiment: {positive / total:.0%} positive "
+                        f"and {negative / total:.0%} negative across the analyzed reviews."
+                    )
+                    if sentiment_examples:
+                        if sentiment_examples.get("POSITIVE"):
+                            summary_text += f" Positive feedback mentioned: {sentiment_examples['POSITIVE']}"
+                        if sentiment_examples.get("NEGATIVE"):
+                            summary_text += f" Main concern mentioned: {sentiment_examples['NEGATIVE']}"
                 
                 return {
                     "summary": summary_text,
@@ -143,6 +173,18 @@ class ReviewSummarizer:
             else:
                 # Use fallback extractive summarization
                 summary_text = self._extractive_summary(reviews, max_sentences=3)
+                if sentiment_counts:
+                    total = sum(sentiment_counts.values())
+                    summary_text = (
+                        f"{summary_text} Overall sentiment: "
+                        f"{sentiment_counts.get('POSITIVE', 0) / total:.0%} positive and "
+                        f"{sentiment_counts.get('NEGATIVE', 0) / total:.0%} negative."
+                    )
+                    if sentiment_examples:
+                        if sentiment_examples.get("POSITIVE"):
+                            summary_text += f" Positive feedback mentioned: {sentiment_examples['POSITIVE']}"
+                        if sentiment_examples.get("NEGATIVE"):
+                            summary_text += f" Main concern mentioned: {sentiment_examples['NEGATIVE']}"
                 
                 return {
                     "summary": summary_text,

@@ -479,11 +479,30 @@ async def summarize_reviews(request: SummarizationRequest, db: Session = Depends
         )
 
     review_texts = [review.review_text for review in reviews if review.review_text]
+    sentiment_counts = {}
+    sentiment_examples = {}
+    for review in reviews:
+        label = (review.sentiment_label or "UNKNOWN").upper()
+        sentiment_counts[label] = sentiment_counts.get(label, 0) + 1
+        if label in {"POSITIVE", "NEGATIVE"} and (
+            label not in sentiment_examples
+            or (
+                label == "NEGATIVE"
+                and review.sentiment_score < sentiment_examples.get("_negative_score", 1.0)
+            )
+        ):
+            example = " ".join((review.review_text or "").split())
+            sentiment_examples[label] = example[:220].rsplit(" ", 1)[0] + "..."
+            if label == "NEGATIVE":
+                sentiment_examples["_negative_score"] = review.sentiment_score
+    sentiment_examples.pop("_negative_score", None)
 
     summary_result = review_summarizer.summarize_reviews(
         review_texts,
         max_length=request.max_length,
-        min_length=request.min_length
+        min_length=request.min_length,
+        sentiment_counts=sentiment_counts,
+        sentiment_examples=sentiment_examples,
     )
 
     return SummarizationResponse(
