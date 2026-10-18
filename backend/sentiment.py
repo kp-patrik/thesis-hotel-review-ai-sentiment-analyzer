@@ -10,11 +10,11 @@ class SentimentAnalyzer:
     def __init__(self):
         """Initialize the sentiment analysis pipeline"""
         try:
-            # Use DistilBERT model fine-tuned for sentiment analysis
+            # Use DistilBERT model fine-tuned for sentiment analysis.
             self.classifier = pipeline(
                 "sentiment-analysis",
                 model="distilbert-base-uncased-finetuned-sst-2-english",
-                return_all_scores=True
+                top_k=None,
             )
             logger.info("Sentiment analysis model loaded successfully")
         except Exception as e:
@@ -40,8 +40,12 @@ class SentimentAnalyzer:
             }
         
         try:
-            # Get prediction
-            results = self.classifier(text)
+            if not isinstance(text, str) or not text.strip():
+                raise ValueError("Text cannot be empty")
+
+            # The model supports 512 tokens; truncation prevents oversized reviews
+            # from failing inference while retaining the beginning of the review.
+            results = self.classifier(text.strip(), truncation=True, max_length=512)
             
             # Text classification returns one list of scores per input text.
             if results and len(results) > 0:

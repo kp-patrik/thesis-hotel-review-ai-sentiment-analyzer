@@ -57,6 +57,7 @@ Do not include passwords, email addresses, API keys, tokens, local file paths, o
 - **AI sentiment analysis** using a Hugging Face DistilBERT transformer model.
 - **Interactive sentiment analyzer** for testing custom review text.
 - **Hotel catalog** with descriptions, locations, review counts, and aggregate sentiment.
+- **Curated development data** with realistic, hotel-specific review examples instead of placeholder text.
 - **Review submission** with automatic sentiment classification and score calculation.
 - **Review summaries** generated from the reviews associated with a hotel.
 - **User authentication** with password hashing, JWT access tokens, email verification, and password-reset flows.
@@ -168,6 +169,12 @@ Edit `backend/.env` and replace `SECRET_KEY` with a unique value. Then initializ
 python migrations.py create
 python migrations.py seed
 uvicorn main:app --reload --port 8000
+```
+
+To rebuild the local development database with the curated five-hotel dataset and meaningful reviews while preserving registered users:
+
+```powershell
+python seed_data.py
 ```
 
 Backend URLs:
