@@ -57,7 +57,7 @@ Do not include passwords, email addresses, API keys, tokens, local file paths, o
 - **AI sentiment analysis** using a Hugging Face DistilBERT transformer model.
 - **Interactive sentiment analyzer** for testing custom review text.
 - **Hotel catalog** with descriptions, locations, review counts, and aggregate sentiment.
-- **Curated development data** with 100 hotels and 50 realistic, hotel-specific reviews per hotel instead of placeholder text.
+- **Curated development data** with 100 hotels and 50 realistic, hotel-specific reviews per hotel, using varied positive, mixed, and negative sentiment profiles instead of placeholder text.
 - **Review submission** with automatic sentiment classification and score calculation.
 - **Review summaries** generated from the reviews associated with a hotel.
 - **User authentication** with password hashing, JWT access tokens, email verification, and password-reset flows.
@@ -171,7 +171,7 @@ python migrations.py seed
 uvicorn main:app --reload --port 8000
 ```
 
-To rebuild the local development database with the curated 100-hotel dataset and 5,000 meaningful reviews while preserving registered users:
+To rebuild the local development database with the curated 100-hotel dataset and 5,000 meaningful reviews with varied hotel sentiment averages while preserving registered users:
 
 ```powershell
 python seed_data.py

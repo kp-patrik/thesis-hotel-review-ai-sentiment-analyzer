@@ -42,27 +42,52 @@ REVIEWERS = [
     "Jamie Carter", "Taylor Reed", "Avery Cooper", "Cameron Hayes", "Drew Bennett",
 ]
 
-REVIEW_TEMPLATES = [
-    ("The room was spotless and comfortable, and the staff were warm and attentive. "
-     "The {feature} made the stay especially enjoyable.", 5),
-    ("We loved the location near the {area}. Check-in was quick, breakfast was fresh, "
-     "and the room was quiet at night.", 5),
-    ("The service was professional and the facilities were well maintained. "
-     "I would gladly return for another stay in {city}.", 5),
-    ("A very pleasant stay with a comfortable bed and helpful front-desk team. "
-     "The only small issue was limited storage in the room.", 4),
-    ("The hotel has a lot going for it, especially the {feature}. "
-     "Housekeeping was reliable, although the room took a while to cool down.", 4),
-    ("The location was convenient and the room was clean, but hallway noise woke us "
-     "one night. Overall, it was a reasonable stay.", 3),
-    ("The room was comfortable enough, but the restaurant was expensive and service "
-     "was slower than expected. The staff remained polite.", 3),
-    ("The {feature} was beautiful, but the bathroom fixtures need updating. "
-     "The hotel was still suitable for a short visit.", 3),
-    ("Our room needed maintenance and the Wi-Fi dropped during an important call. "
-     "The location was useful, but the price felt too high.", 2),
-    ("The check-in process was slow, the room was not ready on time, and the service "
-     "was disappointing. I expected more for this rate.", 2),
+REVIEW_TEMPLATES = {
+    "positive": [
+        ("The room was spotless and comfortable, and the staff were warm and attentive. "
+         "The {feature} made the stay especially enjoyable.", 5),
+        ("We loved the location near the {area}. Check-in was quick, breakfast was fresh, "
+         "and the room was quiet at night.", 5),
+        ("The service was excellent and the facilities were beautifully maintained. "
+         "I would gladly return to {city}.", 5),
+        ("Everything was clean, comfortable, and well organized. The staff solved a small "
+         "request immediately and made us feel genuinely welcome.", 5),
+        ("A wonderful stay with a comfortable bed, excellent breakfast, and friendly service. "
+         "This hotel exceeded our expectations.", 5),
+    ],
+    "mixed": [
+        ("The location near the {area} was convenient and the room was clean, but hallway "
+         "noise woke us one night. Overall, it was a reasonable stay.", 3),
+        ("The {feature} was beautiful, but the bathroom fixtures need updating. "
+         "The hotel was suitable for a short visit, though not perfect.", 3),
+        ("The room was comfortable and the staff were polite, but the restaurant was expensive "
+         "and service was slower than expected.", 3),
+        ("We enjoyed the location and the clean room. However, the Wi-Fi was unreliable and "
+         "the check-in process took longer than expected.", 3),
+        ("Some parts of the stay were excellent, while others felt average for the price. "
+         "The staff were helpful but the facilities look slightly dated.", 3),
+    ],
+    "negative": [
+        ("Our room was dirty on arrival, the air conditioning failed, and the staff did not "
+         "resolve the problem. This was a disappointing stay.", 1),
+        ("The check-in process was extremely slow, the room was not ready, and the service "
+         "was unhelpful. I would not recommend this hotel.", 1),
+        ("The room needed serious maintenance, the Wi-Fi was unusable, and the price was "
+         "unreasonable. The experience was frustrating from start to finish.", 1),
+        ("Noise continued late into the night, breakfast was cold, and no one responded to "
+         "our complaints. I expected much better service.", 2),
+        ("The photographs were misleading. Our room was cramped and poorly cleaned, and the "
+         "staff offered no useful solution.", 1),
+    ],
+}
+
+# Each profile produces a visibly different hotel average while keeping 50 reviews.
+SENTIMENT_PROFILES = [
+    ("positive", 35, "mixed", 10, "negative", 5),
+    ("positive", 20, "mixed", 20, "negative", 10),
+    ("positive", 8, "mixed", 12, "negative", 30),
+    ("positive", 15, "mixed", 25, "negative", 10),
+    ("positive", 25, "mixed", 10, "negative", 15),
 ]
 
 
@@ -90,8 +115,15 @@ def build_reviews(hotel: dict, hotel_index: int) -> list[tuple[str, str, int]]:
     city = hotel["location"].split(",")[0]
     area = CITY_PROFILES[hotel_index % len(CITY_PROFILES)][2]
     feature = CITY_PROFILES[hotel_index % len(CITY_PROFILES)][3]
+    profile = SENTIMENT_PROFILES[hotel_index % len(SENTIMENT_PROFILES)]
+    planned_reviews = []
+    for category, count in zip(profile[::2], profile[1::2]):
+        templates = REVIEW_TEMPLATES[category]
+        for offset in range(count):
+            planned_reviews.append(templates[offset % len(templates)])
+
     reviews = []
-    for review_index, (template, rating) in enumerate(REVIEW_TEMPLATES * 5):
+    for review_index, (template, rating) in enumerate(planned_reviews):
         reviewer = REVIEWERS[(hotel_index + review_index) % len(REVIEWERS)]
         text = template.format(city=city, area=area, feature=feature)
         reviews.append((reviewer, text, rating))
