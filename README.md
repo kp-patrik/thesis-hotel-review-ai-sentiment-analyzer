@@ -299,4 +299,9 @@ This implementation can be discussed in a thesis through the following areas:
 
 ## 📄 License
 
-Add the license required by your university or project supervisor before distributing the project publicly.
+This project is licensed under the [MIT License](./LICENSE).
+
+The MIT License applies to this project's original source code. Third-party
+dependencies, the DistilBERT model, and external Unsplash images remain subject
+to their respective licenses and terms. Confirm image licensing before using
+the project in production.
