@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
 import { API_BASE_URL } from '../services/api';
 
@@ -66,6 +67,17 @@ const ReviewForm = ({ hotelId, onReviewAdded }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  if (!user) {
+    return (
+      <div className="card">
+        <h3>Write a Review</h3>
+        <p>
+          Please <Link to="/login">sign in</Link> to add a review.
+        </p>
+      </div>
+    );
+  }
 
   const handleChange = (e) => {
     setFormData({

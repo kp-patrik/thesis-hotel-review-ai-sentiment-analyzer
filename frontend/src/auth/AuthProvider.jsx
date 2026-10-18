@@ -66,7 +66,13 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
-    try { localStorage.removeItem("token"); localStorage.removeItem("user"); } catch (storageError) { console.warn("Could not clear auth state", storageError); }
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+    } catch (storageError) {
+      console.warn("Could not clear auth state", storageError);
+    }
     setToken(null);
     setUser(null);
   }
