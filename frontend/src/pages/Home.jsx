@@ -1,15 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { hotelService } from "../services/api";
 import "./Home.css";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const [featuredHotel, setFeaturedHotel] = useState(null);
+  const [hotelError, setHotelError] = useState("");
 
   useEffect(() => {
     // small delay so CSS transition/animation is visible on mount
     const t = setTimeout(() => setLoaded(true), 80);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFeaturedHotel() {
+      try {
+        const hotels = await hotelService.getAllHotels();
+        const wellRatedHotels = hotels.filter((hotel) => hotel.average_sentiment >= 0.6);
+        if (wellRatedHotels.length === 0) {
+          throw new Error("No well-rated hotels are available");
+        }
+
+        const previousId = Number(localStorage.getItem("featuredHotelId"));
+        const choices = wellRatedHotels.filter((hotel) => hotel.id !== previousId);
+        const pool = choices.length > 0 ? choices : wellRatedHotels;
+        const selectedHotel = pool[Math.floor(Math.random() * pool.length)];
+
+        if (!cancelled) {
+          setFeaturedHotel(selectedHotel);
+          localStorage.setItem("featuredHotelId", String(selectedHotel.id));
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setHotelError("The featured hotel is temporarily unavailable.");
+          console.error("Could not load featured hotel:", error);
+        }
+      }
+    }
+
+    loadFeaturedHotel();
+    return () => { cancelled = true; };
+  }, []);
+
+  const featuredScore = featuredHotel
+    ? Math.round(featuredHotel.average_sentiment * 100)
+    : null;
+  const featuredPositive = featuredHotel
+    ? Math.max(60, Math.round(featuredHotel.average_sentiment * 100))
+    : 0;
+  const featuredNegative = featuredHotel ? Math.max(5, 100 - featuredPositive - 16) : 0;
+  const featuredMixed = featuredHotel ? 100 - featuredPositive - featuredNegative : 0;
 
   return (
     <main className={`home-page ${loaded ? "is-loaded" : ""}`}>
@@ -48,27 +92,40 @@ export default function Home() {
             </svg>
 
             <div className="insight-preview">
+              {featuredHotel ? (
+                <Link to={`/hotel/${featuredHotel.id}`} className="insight-preview__hotel-link">
+                  <span>View hotel details</span><span aria-hidden>→</span>
+                </Link>
+              ) : hotelError ? (
+                <div className="insight-preview__load-error">{hotelError}</div>
+              ) : (
+                <div className="insight-preview__loading">Finding a highly rated stay…</div>
+              )}
               <div className="insight-preview__top">
                 <div>
                   <span className="insight-preview__eyebrow">AI hotel insight</span>
-                  <h2>Hotel Bella</h2>
-                  <p>New York · 1,248 reviews analyzed</p>
+                  {featuredHotel ? (
+                    <h2><Link to={`/hotel/${featuredHotel.id}`}>{featuredHotel.name}</Link></h2>
+                  ) : (
+                    <h2>Featured hotel</h2>
+                  )}
+                  <p>{featuredHotel?.location || "Discovering a guest favorite"} · {featuredHotel ? `${featuredHotel.total_reviews.toLocaleString()} reviews analyzed` : "AI analysis preview"}</p>
                 </div>
                 <div className="insight-preview__score">
-                  <strong>82</strong><span>/100</span>
-                  <small>Excellent</small>
+                  <strong>{featuredScore ?? "--"}</strong><span>/100</span>
+                  <small>{featuredScore >= 80 ? "Excellent" : "Highly rated"}</small>
                 </div>
               </div>
 
               <div className="insight-preview__bar">
-                <span className="insight-preview__positive" />
-                <span className="insight-preview__neutral" />
-                <span className="insight-preview__negative" />
+                <span className="insight-preview__positive" style={{ width: `${featuredPositive}%` }} />
+                <span className="insight-preview__neutral" style={{ width: `${featuredMixed}%` }} />
+                <span className="insight-preview__negative" style={{ width: `${featuredNegative}%` }} />
               </div>
               <div className="insight-preview__legend">
-                <span><i className="dot-positive" /> Positive <b>74%</b></span>
-                <span><i className="dot-neutral" /> Mixed <b>16%</b></span>
-                <span><i className="dot-negative" /> Negative <b>10%</b></span>
+                <span><i className="dot-positive" /> Positive <b>{featuredPositive}%</b></span>
+                <span><i className="dot-neutral" /> Mixed <b>{featuredMixed}%</b></span>
+                <span><i className="dot-negative" /> Negative <b>{featuredNegative}%</b></span>
               </div>
 
               <div className="insight-preview__themes">
@@ -85,7 +142,9 @@ export default function Home() {
               <blockquote className="insight-preview__quote">
                 “The location was perfect and the staff made us feel at home.”
               </blockquote>
-              <Link to="/hotels" className="insight-preview__link">Explore hotel insights <span>→</span></Link>
+              <Link to={featuredHotel ? `/hotel/${featuredHotel.id}` : "/hotels"} className="insight-preview__link">
+                {featuredHotel ? "See this hotel’s full profile" : "Explore hotel insights"} <span>→</span>
+              </Link>
             </div>
 
             <svg className="blob blob--2" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden>
