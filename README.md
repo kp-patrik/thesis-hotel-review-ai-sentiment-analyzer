@@ -18,9 +18,6 @@
   <img src="./docs/screenshots/00-landing-page.png" alt="Hotel Review AI Sentiment Analyzer landing page" width="900">
 </p>
 
-<p align="center">
-  <em>Replace the image above with the final landing-page screenshot saved as <code>docs/screenshots/00-landing-page.png</code>.</em>
-</p>
 
 ## 📌 Project Overview
 
@@ -35,12 +32,6 @@ The project demonstrates how an AI model can be integrated into a practical web 
 > **Hotel Review AI Sentiment Analyzer** is a full-stack thesis project that designs and implements an AI-assisted tool for classifying and analyzing sentiment in hotel reviews. The system combines a React user interface, a FastAPI REST API, a SQLAlchemy persistence layer, and the Hugging Face `distilbert-base-uncased-finetuned-sst-2-english` transformer model to provide automated sentiment scoring, review analytics, and hotel-level insight.
 
 ## 🖼️ Application Preview
-
-Use the gallery below as the visual showcase for the repository. Keep screenshots
-consistent: use the same browser width, hide developer tools, and capture the
-application in dark mode for a cohesive thesis presentation.
-
-Screenshots are stored in [`docs/screenshots/`](./docs/screenshots/). Add the images listed below using the exact filenames, then they will appear automatically in this section.
 
 ### Landing page
 
@@ -63,18 +54,6 @@ Screenshots are stored in [`docs/screenshots/`](./docs/screenshots/). Add the im
 | Review submission | Authentication | Profile and dark mode |
 |---|---|---|
 | ![Review submission](./docs/screenshots/04-review-submission.png) | ![Authentication](./docs/screenshots/06-authentication.png) | ![Profile and dark mode](./docs/screenshots/07-profile-dark-mode.png) |
-
-### Recommended screenshot checklist
-
-Capture the following at `1366 × 768` or wider, with browser developer tools closed:
-
-1. **`01-hotel-list.png`** — homepage or hotel list showing several hotel cards and sentiment indicators.
-2. **`02-hotel-details.png`** — a hotel page showing its average sentiment, review count, and review history.
-3. **`03-sentiment-analyzer.png`** — the analyzer page with a sample review, predicted label, confidence, and score.
-4. **`04-review-submission.png`** — a completed review form and the resulting sentiment feedback.
-5. **`05-review-summary.png`** — the review-summary page showing the generated summary and analytics.
-6. **`06-authentication.png`** — login or registration page, using demo data only.
-7. **`07-profile-dark-mode.png`** — the profile or edit-profile page in dark mode, showing the themed cards and account information.
 
 Optional additional screenshots:
 
