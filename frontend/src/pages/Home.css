@@ -186,7 +186,7 @@ body {
   pointer-events: none;
 }
 /* position using viewport-relative units and clamp to avoid large negative pixel offsets */
-.blob--1 { left: clamp(-12%, -8vw, -120px); top: clamp(-18%, -10vh, -90px); transform: translateY(0) rotate(6deg); z-index: 0; }
+.blob--1 { display: none; }
 .blob--2 { right: clamp(-12%, -8vw, -120px); bottom: clamp(-8%, -6vh, -40px); transform: translateY(0) rotate(-6deg); z-index: 0; }
 
 /* blob float animation */
