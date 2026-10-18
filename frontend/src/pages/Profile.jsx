@@ -47,10 +47,11 @@ export default function Profile() {
             fontSize: 28,
             fontWeight: 700,
             marginBottom: 12
-          }}>{initials}</div>
+          }}>{user.profile_image_url ? <img src={user.profile_image_url} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : initials}</div>
 
           <div style={{ fontWeight: 700, fontSize: 18 }}>{displayName}</div>
           {user?.email && <div style={{           color: "var(--text-muted)", marginTop: 6 }}>{user.email}</div>}
+          {user?.bio && <div style={{ color: "var(--text-muted)", marginTop: 10, lineHeight: 1.45 }}>{user.bio}</div>}
           <div style={{ marginTop: 12 }}>
             <Link to="/profile/edit" className="btn btn--outline" style={{ padding: "8px 10px" }}>Edit profile</Link>
           </div>

@@ -141,6 +141,10 @@ const callOrFallback = async (fnName, payload, fallbackPath) => {
 };
 
 export const register = (payload) => callOrFallback("register", payload, "/register");
+export const updateProfile = (payload) => {
+  if (typeof api.updateProfile === "function") return api.updateProfile(payload);
+  return callOrFallback("updateProfile", payload, "/me");
+};
 export const requestPasswordReset = (payload) => callOrFallback("requestPasswordReset", payload, "/request-password-reset");
 export const resetPassword = (payload) => callOrFallback("resetPassword", payload, "/reset-password");
 export const verifyEmail = ({ token }) => {
@@ -153,6 +157,7 @@ export default {
   login,
   me,
   register,
+  updateProfile,
   requestPasswordReset,
   resetPassword,
   verifyEmail,

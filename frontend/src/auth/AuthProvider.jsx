@@ -91,8 +91,15 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function updateUser(profileData) {
+    const updatedUser = await authApi.updateProfile(profileData);
+    setUser(updatedUser);
+    try { localStorage.setItem("user", JSON.stringify(updatedUser)); } catch (e) { console.warn("Could not persist updated user", e); }
+    return updatedUser;
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, loading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ token, user, loading, login, logout, refreshUser, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

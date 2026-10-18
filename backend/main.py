@@ -112,6 +112,17 @@ class UserResponse(BaseModel):
     email: Optional[str] = None
     is_verified: Optional[bool] = False
     created_at: Optional[str] = None
+    profile_image_url: Optional[str] = None
+    bio: Optional[str] = None
+
+
+class ProfileUpdateRequest(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    bio: Optional[str] = None
+    profile_image_url: Optional[str] = None
+    current_password: Optional[str] = None
+    new_password: Optional[str] = None
 
 
 # Other Pydantic models
@@ -210,6 +221,8 @@ def register(request: RegisterRequest, background_tasks: BackgroundTasks, db: Se
         email=user.email,
         is_verified=getattr(user, "is_verified", False),
         created_at=user.created_at.isoformat() if user.created_at else None,
+        profile_image_url=getattr(user, "profile_image_url", None),
+        bio=getattr(user, "bio", None),
     )
 
 
@@ -226,10 +239,13 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 @app.get("/me", response_model=UserResponse)
 def me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     payload = decode_access_token(token)
+    user_id = payload.get("user_id")
     username = payload.get("sub")
-    if not username:
+    if not user_id and not username:
         raise HTTPException(status_code=401, detail="Invalid authentication")
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.id == user_id).first() if user_id else None
+    if not user:
+        user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     return UserResponse(
@@ -238,18 +254,71 @@ def me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
         email=user.email,
         is_verified=getattr(user, "is_verified", False),
         created_at=user.created_at.isoformat() if user.created_at else None,
+        profile_image_url=getattr(user, "profile_image_url", None),
+        bio=getattr(user, "bio", None),
     )
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     payload = decode_access_token(token)
+    user_id = payload.get("user_id")
     username = payload.get("sub")
-    if not username:
+    if not user_id and not username:
         raise HTTPException(status_code=401, detail="Invalid authentication")
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.id == user_id).first() if user_id else None
+    if not user:
+        user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     return user
+
+
+@app.put("/me", response_model=UserResponse)
+def update_me(
+    request: ProfileUpdateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if request.username is not None:
+        username = request.username.strip()
+        if len(username) < 3 or len(username) > 50:
+            raise HTTPException(status_code=400, detail="Username must be between 3 and 50 characters")
+        existing = db.query(User).filter(User.username == username, User.id != current_user.id).first()
+        if existing:
+            raise HTTPException(status_code=400, detail="Username already exists")
+        current_user.username = username
+
+    if request.email is not None:
+        current_user.email = request.email.strip() or None
+
+    if request.bio is not None:
+        if len(request.bio) > 280:
+            raise HTTPException(status_code=400, detail="Bio must be 280 characters or fewer")
+        current_user.bio = request.bio.strip() or None
+
+    if request.profile_image_url is not None:
+        if len(request.profile_image_url) > 3_000_000:
+            raise HTTPException(status_code=400, detail="Profile photo is too large")
+        if request.profile_image_url and not request.profile_image_url.startswith("data:image/"):
+            raise HTTPException(status_code=400, detail="Profile photo must be an image")
+        current_user.profile_image_url = request.profile_image_url or None
+
+    if request.new_password is not None:
+        if not request.current_password or not verify_password(request.current_password, current_user.hashed_password):
+            raise HTTPException(status_code=400, detail="Current password is incorrect")
+        current_user.hashed_password = get_password_hash(request.new_password)
+
+    db.commit()
+    db.refresh(current_user)
+    return UserResponse(
+        id=current_user.id,
+        username=current_user.username,
+        email=current_user.email,
+        is_verified=getattr(current_user, "is_verified", False),
+        created_at=current_user.created_at.isoformat() if current_user.created_at else None,
+        profile_image_url=getattr(current_user, "profile_image_url", None),
+        bio=getattr(current_user, "bio", None),
+    )
 
 
 # --- NEW: request password reset ---

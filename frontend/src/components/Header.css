@@ -130,7 +130,9 @@
   font-weight: 700;
   font-size: 0.95rem;
   user-select: none;
+  overflow: hidden;
 }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
 .username {
   font-weight: 600;
   color: var(--text);
@@ -162,8 +164,9 @@
   transition: background .12s;
 }
 .profile-menu__item:not(.profile-menu__user):hover { background: var(--surface); }
-.profile-menu__user { display:flex; gap:10px; align-items:center; border-bottom:1px dashed #f1f3f5; margin-bottom:6px; padding-bottom:8px; }
-.profile-menu__avatar { width:44px; height:44px; border-radius:999px; background:linear-gradient(135deg,var(--brand-color),#6ba6ff); color:white; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:1.05rem; }
+.profile-menu__user { display:flex; gap:10px; align-items:center; border-bottom:1px solid var(--border); margin-bottom:6px; padding-bottom:8px; }
+.profile-menu__avatar { width:44px; height:44px; border-radius:999px; background:linear-gradient(135deg,var(--brand-color),#6ba6ff); color:white; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:1.05rem; overflow:hidden; }
+.profile-menu__avatar img { width:100%; height:100%; object-fit:cover; }
 .profile-menu__meta { display:flex; flex-direction:column; }
 .profile-menu__name { font-weight:700; color:var(--text); }
 .profile-menu__id { color:var(--muted); font-size:0.85rem; }

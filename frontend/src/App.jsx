@@ -12,6 +12,7 @@ import RequestPasswordReset from './pages/RequestPasswordReset';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import MyReviews from './pages/MyReviews';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -55,6 +56,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditProfile />
                   </ProtectedRoute>
                 }
               />

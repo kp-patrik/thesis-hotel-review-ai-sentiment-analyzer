@@ -11,10 +11,19 @@ def create_tables():
     """Create all database tables"""
     print("Creating database tables...")
     Base.metadata.create_all(bind=engine)
-    if "is_verified" not in {column["name"] for column in inspect(engine).get_columns("users")}:
+    user_columns = {column["name"] for column in inspect(engine).get_columns("users")}
+    if "is_verified" not in user_columns:
         with engine.begin() as connection:
             connection.execute(text("ALTER TABLE users ADD COLUMN is_verified BOOLEAN NOT NULL DEFAULT 0"))
         print("Added users.is_verified column")
+    if "profile_image_url" not in user_columns:
+        with engine.begin() as connection:
+            connection.execute(text("ALTER TABLE users ADD COLUMN profile_image_url TEXT"))
+        print("Added users.profile_image_url column")
+    if "bio" not in user_columns:
+        with engine.begin() as connection:
+            connection.execute(text("ALTER TABLE users ADD COLUMN bio TEXT"))
+        print("Added users.bio column")
     print("Tables created successfully")
 
 def seed_sample_data():

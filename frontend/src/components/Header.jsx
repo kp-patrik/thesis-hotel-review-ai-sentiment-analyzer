@@ -83,7 +83,7 @@ export default function Header() {
                 aria-expanded={open}
                 title={displayName}
               >
-                <span className="avatar">{initials}</span>
+                <span className="avatar">{user.profile_image_url ? <img src={user.profile_image_url} alt="" /> : initials}</span>
                 <span className="username">{displayName}</span>
                 <svg className="chev" viewBox="0 0 20 20" width="12" height="12" aria-hidden>
                   <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -93,7 +93,7 @@ export default function Header() {
               {open && (
                 <div className="profile-menu" role="menu">
                   <div className="profile-menu__item profile-menu__user" aria-hidden>
-                    <div className="profile-menu__avatar">{initials}</div>
+                    <div className="profile-menu__avatar">{user.profile_image_url ? <img src={user.profile_image_url} alt="" /> : initials}</div>
                     <div className="profile-menu__meta">
                       <div className="profile-menu__name">{displayName}</div>
                       <div className="profile-menu__id">Member</div>

@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Text, ForeignKey, UniqueConstraint, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Text, ForeignKey, UniqueConstraint, Boolean, inspect, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
@@ -21,6 +21,8 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    profile_image_url = Column(Text, nullable=True)
+    bio = Column(Text, nullable=True)
 
     __table_args__ = (UniqueConstraint("username", name="uq_users_username"),)
 
@@ -57,6 +59,14 @@ class Review(Base):
 
 # Create tables
 Base.metadata.create_all(bind=engine)
+user_columns = {column["name"] for column in inspect(engine).get_columns("users")}
+with engine.begin() as connection:
+    if "is_verified" not in user_columns:
+        connection.execute(text("ALTER TABLE users ADD COLUMN is_verified BOOLEAN NOT NULL DEFAULT 0"))
+    if "profile_image_url" not in user_columns:
+        connection.execute(text("ALTER TABLE users ADD COLUMN profile_image_url TEXT"))
+    if "bio" not in user_columns:
+        connection.execute(text("ALTER TABLE users ADD COLUMN bio TEXT"))
 
 # Dependency to get database session
 def get_db():
