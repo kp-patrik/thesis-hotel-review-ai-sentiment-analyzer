@@ -14,6 +14,14 @@
   <img src="https://img.shields.io/badge/AI-DistilBERT-FF6F00?style=for-the-badge" alt="DistilBERT">
 </p>
 
+<p align="center">
+  <img src="./docs/screenshots/00-landing-page.png" alt="Hotel Review AI Sentiment Analyzer landing page" width="900">
+</p>
+
+<p align="center">
+  <em>Replace the image above with the final landing-page screenshot saved as <code>docs/screenshots/00-landing-page.png</code>.</em>
+</p>
+
 ## 📌 Project Overview
 
 This repository contains my thesis project: a hotel-review management platform with an integrated artificial-intelligence sentiment analyzer.
@@ -28,16 +36,33 @@ The project demonstrates how an AI model can be integrated into a practical web 
 
 ## 🖼️ Application Preview
 
+Use the gallery below as the visual showcase for the repository. Keep screenshots
+consistent: use the same browser width, hide developer tools, and capture the
+application in dark mode for a cohesive thesis presentation.
+
 Screenshots are stored in [`docs/screenshots/`](./docs/screenshots/). Add the images listed below using the exact filenames, then they will appear automatically in this section.
 
-| Screen | Screenshot |
+### Landing page
+
+![Landing page with AI hotel insight](./docs/screenshots/00-landing-page.png)
+
+### Hotel discovery
+
+| Hotel listing | Hotel details, gallery, amenities, and map |
 |---|---|
-| Hotel listing and sentiment overview | ![Hotel listing](./docs/screenshots/01-hotel-list.png) |
-| Hotel details and review history | ![Hotel details](./docs/screenshots/02-hotel-details.png) |
-| AI sentiment analyzer | ![AI sentiment analyzer](./docs/screenshots/03-sentiment-analyzer.png) |
-| Review submission and result | ![Review submission](./docs/screenshots/04-review-submission.png) |
-| Review summary and analytics | ![Review summary](./docs/screenshots/05-review-summary.png) |
-| Login and registration flow | ![Authentication](./docs/screenshots/06-authentication.png) |
+| ![Hotel listing](./docs/screenshots/01-hotel-list.png) | ![Hotel details](./docs/screenshots/02-hotel-details.png) |
+
+### AI analysis and summaries
+
+| Sentiment analyzer | Generated review summary |
+|---|---|
+| ![AI sentiment analyzer](./docs/screenshots/03-sentiment-analyzer.png) | ![Review summary](./docs/screenshots/05-review-summary.png) |
+
+### Reviews and account experience
+
+| Review submission | Authentication | Profile and dark mode |
+|---|---|---|
+| ![Review submission](./docs/screenshots/04-review-submission.png) | ![Authentication](./docs/screenshots/06-authentication.png) | ![Profile and dark mode](./docs/screenshots/07-profile-dark-mode.png) |
 
 ### Recommended screenshot checklist
 
@@ -49,8 +74,24 @@ Capture the following at `1366 × 768` or wider, with browser developer tools cl
 4. **`04-review-submission.png`** — a completed review form and the resulting sentiment feedback.
 5. **`05-review-summary.png`** — the review-summary page showing the generated summary and analytics.
 6. **`06-authentication.png`** — login or registration page, using demo data only.
+7. **`07-profile-dark-mode.png`** — the profile or edit-profile page in dark mode, showing the themed cards and account information.
+
+Optional additional screenshots:
+
+- **`00-landing-page.png`** — the landing page with the rotating AI Hotel Insight card.
+- **`08-photo-carousel.png`** — the hotel photo carousel opened on a room or exterior image.
+- **`09-review-filters.png`** — the hotel detail page with the positive, neutral, or negative review filter selected.
 
 Do not include passwords, email addresses, API keys, tokens, local file paths, or personal information in screenshots.
+
+### Screenshot presentation tips
+
+- Use `1366 × 768` or wider for the main gallery.
+- Use dark mode for the primary set and light mode for one comparison screenshot.
+- Capture the photo carousel with the selected image centered and its thumbnails visible.
+- Capture the analyzer after a result has loaded, including the sentiment label and score.
+- Capture summaries after generation completes, including the positive/negative breakdown.
+- Use demo accounts and fictional content only.
 
 ## ✨ Main Features
 
