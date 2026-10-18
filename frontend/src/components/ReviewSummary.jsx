@@ -25,9 +25,9 @@ const ReviewSummary = ({ hotelId, totalReviews }) => {
   if (totalReviews === 0) return null;
 
   return (
-    <div className="card" style={{ marginBottom: '1.5rem', backgroundColor: '#f8f9fa' }}>
+    <div className="card" style={{ marginBottom: '1.5rem', backgroundColor: 'var(--surface-muted)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <h3 style={{ margin: 0, color: '#495057' }}>📝 Review Summary</h3>
+        <h3 style={{ margin: 0, color: 'var(--text)' }}>📝 Review Summary</h3>
         {!summary ? (
           <button 
             onClick={handleSummarize}
@@ -49,10 +49,10 @@ const ReviewSummary = ({ hotelId, totalReviews }) => {
       {error && (
         <div style={{ 
           padding: '0.75rem', 
-          backgroundColor: '#f8d7da', 
-          border: '1px solid #f5c6cb',
+          backgroundColor: 'var(--error-bg, #f8d7da)',
+          border: '1px solid var(--error-border, #f5c6cb)',
           borderRadius: '0.375rem',
-          color: '#721c24',
+          color: 'var(--error-text, #721c24)',
           marginBottom: '1rem'
         }}>
           {error}
@@ -63,10 +63,10 @@ const ReviewSummary = ({ hotelId, totalReviews }) => {
         <div style={{ 
           padding: '1.5rem', 
           textAlign: 'center', 
-          color: '#6c757d',
-          backgroundColor: '#fff',
+          color: 'var(--text-muted)',
+          backgroundColor: 'var(--surface)',
           borderRadius: '0.375rem',
-          border: '1px solid #dee2e6'
+          border: '1px solid var(--border)'
         }}>
           🤖 Analyzing {totalReviews} reviews...
         </div>
@@ -75,14 +75,14 @@ const ReviewSummary = ({ hotelId, totalReviews }) => {
       {summary && expanded && (
         <div style={{ 
           padding: '1.5rem', 
-          backgroundColor: '#fff',
+          backgroundColor: 'var(--surface)',
           borderRadius: '0.375rem',
-          border: '1px solid #dee2e6'
+          border: '1px solid var(--border)'
         }}>
           <div style={{ 
             fontSize: '1rem', 
             lineHeight: '1.6',
-            color: '#495057',
+            color: 'var(--text)',
             marginBottom: '1rem'
           }}>
             {summary.summary}
@@ -92,9 +92,9 @@ const ReviewSummary = ({ hotelId, totalReviews }) => {
             display: 'flex', 
             gap: '1rem', 
             fontSize: '0.85rem', 
-            color: '#6c757d',
+            color: 'var(--text-muted)',
             paddingTop: '1rem',
-            borderTop: '1px solid #dee2e6'
+            borderTop: '1px solid var(--border)'
           }}>
             <span>📊 {summary.processed_reviews} of {summary.total_reviews} reviews</span>
             {summary.model_used && <span>🤖 {summary.model_used}</span>}
@@ -106,7 +106,7 @@ const ReviewSummary = ({ hotelId, totalReviews }) => {
         <div style={{ 
           padding: '1rem', 
           textAlign: 'center', 
-          color: '#6c757d'
+          color: 'var(--text-muted)'
         }}>
           Get an AI-generated summary of all {totalReviews} reviews
         </div>

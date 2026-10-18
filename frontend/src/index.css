@@ -12,6 +12,9 @@
   --text-muted: #666;
   --border: #e1e5ea;
   --shadow: rgba(0, 0, 0, 0.1);
+  --error-bg: #f8d7da;
+  --error-border: #f5c6cb;
+  --error-text: #721c24;
 }
 
 [data-theme='dark'] {
@@ -22,6 +25,9 @@
   --text-muted: #aab7c9;
   --border: #33445d;
   --shadow: rgba(0, 0, 0, 0.32);
+  --error-bg: #5b2630;
+  --error-border: #8f3d4b;
+  --error-text: #fecdd3;
 }
 
 body {
