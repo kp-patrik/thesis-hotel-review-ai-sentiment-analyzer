@@ -61,7 +61,6 @@ const ReviewForm = ({ hotelId, onReviewAdded }) => {
   const userId = user?.id ?? null;
 
   const [formData, setFormData] = useState({
-    reviewer_name: user?.username || user?.name || '',
     review_text: ''
   });
   const [loading, setLoading] = useState(false);
@@ -92,8 +91,8 @@ const ReviewForm = ({ hotelId, onReviewAdded }) => {
     setError('');
     setSuccess('');
 
-    if (!formData.reviewer_name.trim() || !formData.review_text.trim()) {
-      setError('Please fill in all fields');
+    if (!formData.review_text.trim()) {
+      setError('Please write a review before submitting');
       return;
     }
 
@@ -102,14 +101,13 @@ const ReviewForm = ({ hotelId, onReviewAdded }) => {
     try {
       const reviewData = {
         hotel_id: hotelId,
-        reviewer_name: formData.reviewer_name.trim(),
         review_text: formData.review_text.trim()
       };
 
       const newReview = await postReviewPayload(reviewData);
 
       setSuccess('Review submitted successfully!');
-      setFormData({ reviewer_name: user?.username || user?.name || '', review_text: '' });
+      setFormData({ review_text: '' });
 
       if (onReviewAdded) onReviewAdded(newReview);
 
@@ -150,20 +148,6 @@ const ReviewForm = ({ hotelId, onReviewAdded }) => {
       {success && <div className="success" style={{ background: "#e6ffed", color: "#1a7f37", padding: 8, borderRadius: 6 }}>{success}</div>}
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group" style={{ marginBottom: 10 }}>
-          <label htmlFor="reviewer_name">Your Name</label>
-          <input
-            type="text"
-            id="reviewer_name"
-            name="reviewer_name"
-            value={formData.reviewer_name}
-            onChange={handleChange}
-            className="form-control"
-            placeholder="Enter your name"
-            disabled={loading}
-          />
-        </div>
-
         <div className="form-group" style={{ marginBottom: 10 }}>
           <label htmlFor="review_text">Your Review</label>
           <textarea

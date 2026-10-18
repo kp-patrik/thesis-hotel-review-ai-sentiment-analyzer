@@ -401,7 +401,7 @@ async def create_review(request: ReviewCreateRequest, db: Session = Depends(get_
     if hotel is None:
         raise HTTPException(status_code=404, detail="Hotel not found")
 
-    reviewer_name = request.reviewer_name or current_user.username
+    reviewer_name = current_user.username
 
     sentiment_result = sentiment_analyzer.analyze_sentiment(request.review_text)
     if "error" in sentiment_result:
