@@ -25,14 +25,27 @@ body {
 
 .home-page {
   padding: 20px 16px;
-  background: linear-gradient(180deg, #fbfdff 0%, #fafafa 100%);
+  background: linear-gradient(180deg, var(--page-bg) 0%, var(--surface-muted) 100%);
   min-height: calc(100vh - 72px);
-  color: #0f172a;
+  color: var(--text);
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* extra safety against horizontal overflow from children (blobs, previews) */
   overflow-x: hidden;
+}
+
+[data-theme='dark'] .home-page .hero__copy,
+[data-theme='dark'] .home-page .phone-preview,
+[data-theme='dark'] .home-page .card.small {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .home-page .hero__subtitle,
+[data-theme='dark'] .home-page .hero__bullets {
+  color: var(--text-muted);
 }
 
 /* HERO */
@@ -55,7 +68,7 @@ body {
 
 /* COPY CARD with subtle entrance */
 .hero__copy {
-  background: white;
+  background: var(--surface);
   border-radius: 16px;
   padding: 18px;
   box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
@@ -237,7 +250,7 @@ body {
 
 /* phone cards with staggered entrance */
 .card.small {
-  background: white;
+  background: var(--surface);
   border-radius: 12px;
   padding: 10px;
   border: 1px solid #eef2f6;
@@ -273,7 +286,7 @@ body {
   gap: 12px;
 }
 .feature {
-  background: white;
+  background: var(--surface);
   border-radius: 12px;
   padding: 14px;
   box-shadow: 0 10px 30px rgba(15,23,42,0.04);

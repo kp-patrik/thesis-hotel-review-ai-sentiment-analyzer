@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import "../components/Header.css";
 import logoSrc from "../assets/logo.png"; // folosește logo din src/assets
+import { useTheme } from "../theme/ThemeProvider";
 
 export default function Header() {
   const { user, loading, logout } = useAuth();
+  const { darkMode, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const menuRef = useRef(null);
@@ -62,6 +64,14 @@ export default function Header() {
         </div>
 
         <div className="app-header__actions">
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {darkMode ? "☀️" : "🌙"}
+          </button>
           {loading ? (
             <div className="session-status">Checking session…</div>
           ) : user ? (

@@ -17,16 +17,18 @@ import Home from './pages/Home';
 import About from './pages/About';
 import { AuthProvider } from './auth/AuthProvider';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { ThemeProvider } from './theme/ThemeProvider';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          <Header />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="App" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Header />
 
-          <main style={{ flex: 1 }}>
-            <Routes>
+            <main style={{ flex: 1 }}>
+              <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/hotels" element={<HotelList />} />
               <Route path="/hotel/:id" element={<HotelDetail />} />
@@ -72,13 +74,14 @@ function App() {
               <Route path="/request-password-reset" element={<RequestPasswordReset />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
-            </Routes>
-          </main>
+              </Routes>
+            </main>
 
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+            <Footer />
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
