@@ -111,6 +111,7 @@ class UserResponse(BaseModel):
     username: str
     email: Optional[str] = None
     is_verified: Optional[bool] = False
+    created_at: Optional[str] = None
 
 
 # Other Pydantic models
@@ -203,7 +204,13 @@ def register(request: RegisterRequest, background_tasks: BackgroundTasks, db: Se
         token = create_access_token({"sub": user.username, "type": "verify"}, expires_delta=timedelta(hours=24))
         background_tasks.add_task(send_verification_email, user.email, user.username, token)
 
-    return UserResponse(id=user.id, username=user.username, email=user.email, is_verified=getattr(user, "is_verified", False))
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        is_verified=getattr(user, "is_verified", False),
+        created_at=user.created_at.isoformat() if user.created_at else None,
+    )
 
 
 @app.post("/login", response_model=TokenResponse)
@@ -225,7 +232,13 @@ def me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    return UserResponse(id=user.id, username=user.username, email=user.email, is_verified=getattr(user, "is_verified", False))
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        is_verified=getattr(user, "is_verified", False),
+        created_at=user.created_at.isoformat() if user.created_at else None,
+    )
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
