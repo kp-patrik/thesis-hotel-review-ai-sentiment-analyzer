@@ -62,7 +62,7 @@ const ReviewSummaryPage = () => {
     <div className="container">
       <div style={{ marginBottom: '2rem' }}>
         <h2 style={{ marginBottom: '1rem' }}>Review Summaries</h2>
-        <p style={{ color: '#666', marginBottom: '1.5rem' }}>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
           AI-generated summaries of guest reviews for each hotel
         </p>
         
@@ -88,8 +88,8 @@ const ReviewSummaryPage = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                 <div>
                   <h3 style={{ margin: '0 0 0.5rem 0' }}>{hotel.name}</h3>
-                  <p style={{ margin: '0 0 0.5rem 0', color: '#666' }}>📍 {hotel.location}</p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#888' }}>
+                  <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-muted)' }}>📍 {hotel.location}</p>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
                     {hotel.total_reviews} reviews • {(hotel.average_sentiment * 100).toFixed(0)}% sentiment
                   </p>
                 </div>
@@ -107,8 +107,9 @@ const ReviewSummaryPage = () => {
                 <div style={{ 
                   padding: '1.5rem', 
                   textAlign: 'center', 
-                  color: '#6c757d',
-                  backgroundColor: '#f8f9fa',
+                  color: 'var(--text-muted)',
+                  backgroundColor: 'var(--surface-muted)',
+                  border: '1px solid var(--border)',
                   borderRadius: '0.375rem'
                 }}>
                   🤖 Analyzing {hotel.total_reviews} reviews...
@@ -118,7 +119,8 @@ const ReviewSummaryPage = () => {
               {summaries[hotel.id] && (
                 <div style={{ 
                   padding: '1.5rem', 
-                  backgroundColor: '#f8f9fa',
+                  backgroundColor: 'var(--surface-muted)',
+                  border: '1px solid var(--border)',
                   borderRadius: '0.375rem'
                 }}>
                   <h4 style={{ margin: '0 0 1rem 0' }}>📝 Summary</h4>
@@ -132,9 +134,9 @@ const ReviewSummaryPage = () => {
                   
                   <div style={{ 
                     fontSize: '0.85rem', 
-                    color: '#6c757d',
+                    color: 'var(--text-muted)',
                     paddingTop: '1rem',
-                    borderTop: '1px solid #dee2e6'
+                    borderTop: '1px solid var(--border)'
                   }}>
                     📊 {summaries[hotel.id].processed_reviews} of {summaries[hotel.id].total_reviews} reviews analyzed
                     {summaries[hotel.id].model_used && ` • 🤖 ${summaries[hotel.id].model_used}`}
