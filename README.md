@@ -1,6 +1,8 @@
-# 🏨 Hotel Review Sentiment Analysis Web App
+# 🎓 Thesis: Hotel Review AI Sentiment Analyzer
 
-> A full-stack web application that allows users to submit hotel reviews and automatically analyzes their sentiment using advanced NLP techniques.
+> A full-stack thesis project that implements an AI-powered sentiment-analysis tool for hotel reviews. Users can submit reviews, receive automatic sentiment scores, explore hotel-level analytics, and generate review summaries.
+
+This project demonstrates the design and implementation of an AI sentiment analyzer as an integrated tool within a hotel-review management platform. The system combines a FastAPI backend, a React frontend, transformer-based NLP models, and persistent review analytics.
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
