@@ -160,6 +160,8 @@ class HotelResponse(BaseModel):
     description: str
     average_sentiment: float
     total_reviews: int
+    category: Optional[str] = ""
+    amenities: List[str] = []
 
 
 class HotelDetailResponse(BaseModel):
@@ -169,6 +171,8 @@ class HotelDetailResponse(BaseModel):
     description: str
     average_sentiment: float
     total_reviews: int
+    category: Optional[str] = ""
+    amenities: List[str] = []
     reviews: List[ReviewResponse]
 
 
@@ -519,7 +523,9 @@ async def list_hotels(skip: int = 0, limit: int = 100, db: Session = Depends(get
             location=h.location,
             description=h.description,
             average_sentiment=h.average_sentiment,
-            total_reviews=h.total_reviews
+            total_reviews=h.total_reviews,
+            category=h.category or "",
+            amenities=[item.strip() for item in (h.amenities or "").split(",") if item.strip()],
         )
         for h in hotels
     ]
@@ -540,6 +546,8 @@ async def get_hotel_detail(hotel_id: int, db: Session = Depends(get_db)):
         description=hotel.description,
         average_sentiment=hotel.average_sentiment,
         total_reviews=hotel.total_reviews,
+        category=hotel.category or "",
+        amenities=[item.strip() for item in (hotel.amenities or "").split(",") if item.strip()],
         reviews=[
             ReviewResponse(
                 id=r.id,
